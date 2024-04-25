@@ -1,0 +1,22 @@
+.title-box {
+    display: flex;
+    flex-direction: column;
+
+    gap: 8px;
+
+    margin-bottom: 25px;
+}
+
+.title-box-title {
+    font-size: 20px;
+    font-weight: 700;
+
+    color: rgba(0, 0, 0, 1);
+}
+
+.title-box-sub-title {
+    font-size: 15px;
+    font-weight: 400;
+
+    color: rgba(0, 0, 0, 0.5);
+}
