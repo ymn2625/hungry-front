@@ -1,0 +1,74 @@
+.App {
+    max-width: 767px;
+    height: 600px;
+
+    border: 1px solid rgba(0, 0, 0, 0.2);
+
+    padding: 20px;
+}
+
+.button-on {
+    height: 47px;
+
+    border-radius: 4px;
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(50, 220, 255, 1);
+
+    color: rgba(0, 0, 0, 0.9);
+
+    font-size: 15px;
+    font-weight: 400;
+
+    cursor: pointer;
+}
+
+.button-on:hover {
+    background-color: rgba(50, 220, 255, 0.9);
+
+    color: rgba(0, 0, 0, 0.6);
+}
+
+.button-off {
+    height: 47px;
+
+    border-radius: 4px;
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(50, 220, 255, 0.7);
+
+    color: rgba(0, 0, 0, 0.5);
+
+    font-size: 15px;
+    font-weight: 400;
+}
+
+.naver-login {
+    width: 40px;
+    height: 40px;
+
+    background-image: url("./assets/images/naver-sign-in.png");
+    background-position: 50% 50%;
+    background-size: 100% 100%;
+
+    border-radius: 50%;
+
+    cursor: pointer;
+}
+
+.kakao-login {
+    width: 40px;
+    height: 40px;
+
+    background-image: url("./assets/images/kakao-sign-in.png");
+    background-position: 50% 50%;
+    background-size: 100% 100%;
+
+    border-radius: 50%;
+
+    cursor: pointer;
+}
