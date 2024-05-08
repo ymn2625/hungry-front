@@ -71,7 +71,6 @@ function SignUp(props) {
         </div>
     )
 }
-
 function EmailPassword({ userData, updateUserData, errors, updateError, onNext }) {
     // value
     const { email, password, passwordCheck } = userData;

@@ -25,14 +25,14 @@
 .divide-line {
     flex: 1;
 
-    border-top: 1px solid rgba(0, 0, 0, 0.5);
+    border-top: 1px solid rgba(0, 0, 0, 0.2);
 }
 
 .divide-text {
     font-size: 10px;
-    font-weight: 400;
+    font-weight: 700;
 
-    color: rgba(0, 0, 0, 0.5);
+    color: rgba(0, 0, 0, 0.2);
 }
 
 .social-login-container {
