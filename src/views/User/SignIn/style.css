@@ -1,0 +1,43 @@
+.text-link-container {
+    display: flex;
+    justify-content: center;
+
+    margin: 20px 0;
+
+    font-size: 14px;
+    font-weight: 400;
+
+    color: rgba(0, 0, 0, 0.5);
+}
+
+.text-link {
+    cursor: pointer;
+}
+
+.divide-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    margin-bottom: 10px;
+}
+
+.divide-line {
+    flex: 1;
+
+    border-top: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.divide-text {
+    font-size: 10px;
+    font-weight: 700;
+
+    color: rgba(0, 0, 0, 0.2);
+}
+
+.social-login-container {
+    display: flex;
+    justify-content: center;
+
+    gap: 10px;
+}

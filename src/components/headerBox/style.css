@@ -1,0 +1,22 @@
+.header-container {
+    display: flex;
+
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-side {
+    width: 14px;
+    height: 14px;
+}
+
+.header-side.back-arrow {
+    background-position: 50% 50%;
+    background-size: 100% 100%;
+    background-image: url("../../assets/images/left-arrow.png");
+}
+
+.header-title {
+    font-size: 14px;
+    font-weight: 600;
+}
