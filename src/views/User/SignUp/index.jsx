@@ -4,9 +4,12 @@ import defaultProfileImg from "../../../assets/images/default-profile-image.jpeg
 import TitleBox from "../../../components/titleBox";
 import InputBox from "../../../components/inputBox";
 import HeaderBox from "../../../components/headerBox";
+import {useLocation} from "react-router-dom";
 
 function SignUp(props) {
-    const [step, setStep] = useState(1);
+    const location = useLocation();
+    const [step, setStep] = useState(location.state?.step);
+    const [userEmail, setUserEmail] = useState(location.state?.email);
 
     // value
     const [userData, setUserData] = useState({
@@ -64,6 +67,7 @@ function SignUp(props) {
     return (
         <div className='sign-up-wrapper'>
             <HeaderBox onClick={onPrevClickHandler} title='회원가입'/>
+            {userEmail}
             {step === 1 && <EmailPassword userData={userData} errors={errors} updateUserData={updateUserData} updateError={updateError} onNext={onNextClickHandler}/>}
             {step === 2 && <NameTel userData={userData} errors={errors} updateUserData={updateUserData} updateError={updateError} onNext={onNextClickHandler}/>}
             {step === 3 && <Certification userData={userData} errors={errors} updateUserData={updateUserData} updateError={updateError} onNext={onNextClickHandler}/>}

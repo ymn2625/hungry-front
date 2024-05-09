@@ -28,7 +28,7 @@ function SignIn(props) {
         if(!responseBody) return;
         const { code } = responseBody;
 
-        if(code === ResponseCode.VALIDATION_FAIL) alert('아이디와 비밀번호를 입력하세요.');
+        if(code === ResponseCode.VALIDATION_FAIL) alert('아이디 또는 비밀번호의 형식을 확인하세요.');
         if(code === ResponseCode.SIGN_IN_FAIL) setMessage('로그인 정보가 일치하지 않습니다.');
         if(code === ResponseCode.DATABASE_ERROR) alert('데이터베이스 오류입니다.');
         if(code !== ResponseCode.SUCCESS) return;
@@ -71,8 +71,6 @@ function SignIn(props) {
         navigate('/account/sign-up');
     }
 
-    const buttonClass = userEmail && userPassword ? 'button-on' : 'button-off';
-
     const onSnsSignInButtonClickHandler = (type: 'kakao' | 'naver') => {
         window.location.href = SNS_SIGN_IN_URL(type);
     }
@@ -86,6 +84,9 @@ function SignIn(props) {
         if(event.key !== 'Enter') return;
         onButtonClickHandler();
     }
+
+    // 버튼 활성화 조건
+    const buttonClass = userEmail && userPassword ? 'button-on' : 'button-off';
 
     return (
         <div className='sign-up-wrapper'>

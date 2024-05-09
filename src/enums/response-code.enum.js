@@ -6,6 +6,7 @@ const ResponseCode = {
 
     SIGN_IN_FAIL: "SF",
     CERTIFICATION_FAIL: "CF",
+    REISSUE_FAIL: "RF",
 
     MESSAGE_FAIL: "MF",
     DATABASE_ERROR: "DBE"
