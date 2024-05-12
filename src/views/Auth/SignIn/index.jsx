@@ -1,11 +1,13 @@
-import {signInRequest, SNS_SIGN_IN_URL} from "../../../apis/user";
-import ResponseCode from "../../../enums/response-code.enum";
+
+import ResponseCode from "../../../enums/response-code";
 import HeaderBox from "../../../components/headerBox";
 import TitleBox from "../../../components/titleBox";
 import InputBox from "../../../components/inputBox";
 import {useNavigate} from "react-router-dom";
 import {useRef, useState} from "react";
 import "./style.css";
+import {postPublicApi} from "../../../apis/publicApi";
+import {SIGN_IN_URL, SNS_SIGN_IN_URL} from "../../../apis/user/authURL";
 
 function SignIn(props) {
 
@@ -35,20 +37,20 @@ function SignIn(props) {
 
         const { token, expirationTime } = responseBody;
 
-        const now = (new Date().getTime()) * 1000;
-        const expires = new Date(now + expirationTime);
-
-        localStorage.setItem('accessToken', token, {expires, path: '/'});
+        window.localStorage.setItem('accessToken', token);
+        setTimeout(() => {
+            window.localStorage.removeItem('accessToken');
+        }, expirationTime);
         navigate('/');
     }
 
     // onChange
-    const onEmailChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
+    const onEmailChangeHandler = (event) => {
         const { value } = event.target;
         setUserEmail(value);
         setMessage('');
     };
-    const onPasswordChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
+    const onPasswordChangeHandler = (event) => {
         const { value } = event.target;
         setUserPassword(value);
         setMessage('');
@@ -64,11 +66,11 @@ function SignIn(props) {
         }
 
         const requestBody = { userEmail, userPassword };
-        signInRequest(requestBody).then(signInResponse);
+        postPublicApi(SIGN_IN_URL(), requestBody).then(signInResponse);
     }
 
     const onSignUpTextClick = () => {
-        navigate('/account/sign-up');
+        navigate('/auth/sign-up');
     }
 
     const onSnsSignInButtonClickHandler = (type: 'kakao' | 'naver') => {
