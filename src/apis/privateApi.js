@@ -31,8 +31,6 @@ privateApi.interceptors.response.use(
                 window.location.replace('http://localhost:3000/auth/sign-in');
             }
 
-            console.log(expirationTime);
-
             window.localStorage.setItem('accessToken', token);
             setTimeout(() => {
                 window.localStorage.removeItem('accessToken');
