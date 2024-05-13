@@ -4,7 +4,7 @@ import defaultProfileImg from "../../../assets/images/default-profile-image.jpeg
 import TitleBox from "../../../components/titleBox";
 import InputBox from "../../../components/inputBox";
 import HeaderBox from "../../../components/headerBox";
-import {postPublicApi} from "../../../apis/publicApi";
+import {fileUploadRequest, postPublicApi} from "../../../apis/publicApi";
 import {
     CHECK_CERTIFICATION_URL,
     CHECK_EMAIL_URL, SIGN_UP_URL,
@@ -48,7 +48,7 @@ function SignUp(props) {
     const [userName, setUserName] = useState('');
     const [userTel, setUserTel] = useState('');
     const [certificationNumber, setCertificationNumber] = useState('');
-    const [userProfileImg, setUserProfileImg] = useState(null);
+    const [profileImg, setProfileImg] = useState(null);
     const [userNickname, setUserNickname] = useState('');
     const [userType, setUserType] = useState('app');
 
@@ -162,18 +162,15 @@ function SignUp(props) {
     }
 
     const onProfileImgChangeHandler = (event) => {
+        if(!event.target.files || !event.target.files.length) return;
         const file = event.target.files[0];
-        setUserProfileImg(file);
+        const imageUrl = URL.createObjectURL(file);
+        setPreviewImg(imageUrl);
+        setProfileImg(file);
 
-        // 이미지 미리보기
-        const reader = new FileReader();
-        reader.onloadend = () => {
-            setPreviewImg(reader.result);
-        };
-
-        if (file) {
-            reader.readAsDataURL(file);
-        }
+        // 같은 파일 선택시 변경 안됨 방지
+        if(!profileImgRef.current) return;
+        profileImgRef.current.value = '';
     };
 
     const onNicknameChangeHandler = (event) => {
@@ -230,8 +227,13 @@ function SignUp(props) {
         profileImgRef.current.click();
     }
 
-    const onProfileImgNicknameButtonClickHandler = () => {
+    const onProfileImgNicknameButtonClickHandler = async () => {
         if(!userNickname) return;
+
+        const data = new FormData();
+        data.append('file', profileImg);
+
+        const userProfileImg = await fileUploadRequest(data);
 
         const requestBody = { userEmail, userPassword, userName, userTel, userProfileImg, userNickname, userType };
         postPublicApi(SIGN_UP_URL(), requestBody).then(signUpResponse);
@@ -270,7 +272,6 @@ function SignUp(props) {
         if(code === ResponseCode.DATABASE_ERROR) alert('데이터베이스 오류입니다.');
         if(code === ResponseCode.CERTIFICATION_FAIL) setCertificationNumberError('인증번호가 일치하지 않습니다.')
 
-        console.log(userEmail);
         if(code === ResponseCode.SUCCESS && userEmail) {
             alert('이미 존재하는 회원입니다. 로그인 화면으로 이동합니다.');
             window.location.replace('http://localhost:3000/auth/sign-in');

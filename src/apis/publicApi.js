@@ -1,5 +1,6 @@
 import axios from "axios";
 import {errorHandler, responseHandler} from "./commonApi";
+import {FILE_UPLOAD_URL} from "./baseURL";
 
 const publicApi = axios.create({
     withCredentials: true
@@ -37,5 +38,14 @@ export const deletePublicApi = async (url) => {
     const result = await publicApi.delete(url)
         .then(responseHandler)
         .catch(errorHandler);
+    return result;
+}
+
+// file 관련
+const multipartFormData = { headers: { 'Content-Type': 'multipart/form-data' }, withCredentials: true };
+export const fileUploadRequest = async (data) => {
+    const result = await axios.post(FILE_UPLOAD_URL(), data, multipartFormData)
+        .then(responseHandler)
+        .catch(error => { return null; });
     return result;
 }
