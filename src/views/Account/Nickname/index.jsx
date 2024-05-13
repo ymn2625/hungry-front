@@ -2,8 +2,13 @@ import {useState} from "react";
 import ResponseCode from "../../../enums/response-code";
 import {patchPrivateApi} from "../../../apis/privateApi";
 import {PATCH_NICKNAME_URL} from "../../../apis/user/accountURL";
+import {useUserInfo} from "../../../stores/user_store";
 
 function Nickname(props) {
+    // store
+    const { userInfo, setUserInfo } = useUserInfo();
+
+    // value
     const [userEmail, setUserEmail] = useState('leeym2615@naver.com');
     const [userNickname, setUserNickName] = useState('변경된 닉네임');
     const patchNicknameResponse = (responseBody) => {
@@ -22,6 +27,7 @@ function Nickname(props) {
         <div>
             {userNickname}
             <div onClick={onButtonClickHandler}>닉네임 변경!</div>
+            {userInfo.userEmail}
         </div>
     )
 }

@@ -42,7 +42,8 @@ export const deletePublicApi = async (url) => {
 }
 
 // file 관련
-const multipartFormData = { headers: { 'Content-Type': 'multipart/form-data' }, withCredentials: true };
+axios.defaults.withCredentials=true;
+const multipartFormData = { headers: { 'Content-Type': 'multipart/form-data' } };
 export const fileUploadRequest = async (data) => {
     const result = await axios.post(FILE_UPLOAD_URL(), data, multipartFormData)
         .then(responseHandler)

@@ -234,6 +234,7 @@ function SignUp(props) {
         data.append('file', profileImg);
 
         const userProfileImg = await fileUploadRequest(data);
+        alert(userProfileImg);
 
         const requestBody = { userEmail, userPassword, userName, userTel, userProfileImg, userNickname, userType };
         postPublicApi(SIGN_UP_URL(), requestBody).then(signUpResponse);
