@@ -1,11 +1,13 @@
-import {signInRequest, SNS_SIGN_IN_URL} from "../../../apis/user";
-import ResponseCode from "../../../enums/response-code.enum";
+
+import ResponseCode from "../../../enums/response-code";
 import HeaderBox from "../../../components/headerBox";
 import TitleBox from "../../../components/titleBox";
 import InputBox from "../../../components/inputBox";
 import {useNavigate} from "react-router-dom";
 import {useRef, useState} from "react";
 import "./style.css";
+import {postPublicApi} from "../../../apis/publicApi";
+import {SIGN_IN_URL, SNS_SIGN_IN_URL} from "../../../apis/user/authURL";
 
 function SignIn(props) {
 
@@ -28,27 +30,27 @@ function SignIn(props) {
         if(!responseBody) return;
         const { code } = responseBody;
 
-        if(code === ResponseCode.VALIDATION_FAIL) alert('아이디와 비밀번호를 입력하세요.');
+        if(code === ResponseCode.VALIDATION_FAIL) alert('아이디 또는 비밀번호의 형식을 확인하세요.');
         if(code === ResponseCode.SIGN_IN_FAIL) setMessage('로그인 정보가 일치하지 않습니다.');
         if(code === ResponseCode.DATABASE_ERROR) alert('데이터베이스 오류입니다.');
         if(code !== ResponseCode.SUCCESS) return;
 
         const { token, expirationTime } = responseBody;
 
-        const now = (new Date().getTime()) * 1000;
-        const expires = new Date(now + expirationTime);
-
-        localStorage.setItem('accessToken', token, {expires, path: '/'});
+        window.localStorage.setItem('accessToken', token);
+        setTimeout(() => {
+            window.localStorage.removeItem('accessToken');
+        }, expirationTime);
         navigate('/');
     }
 
     // onChange
-    const onEmailChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
+    const onEmailChangeHandler = (event) => {
         const { value } = event.target;
         setUserEmail(value);
         setMessage('');
     };
-    const onPasswordChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
+    const onPasswordChangeHandler = (event) => {
         const { value } = event.target;
         setUserPassword(value);
         setMessage('');
@@ -64,14 +66,12 @@ function SignIn(props) {
         }
 
         const requestBody = { userEmail, userPassword };
-        signInRequest(requestBody).then(signInResponse);
+        postPublicApi(SIGN_IN_URL(), requestBody).then(signInResponse);
     }
 
     const onSignUpTextClick = () => {
-        navigate('/account/sign-up');
+        navigate('/auth/sign-up');
     }
-
-    const buttonClass = userEmail && userPassword ? 'button-on' : 'button-off';
 
     const onSnsSignInButtonClickHandler = (type: 'kakao' | 'naver') => {
         window.location.href = SNS_SIGN_IN_URL(type);
@@ -86,6 +86,9 @@ function SignIn(props) {
         if(event.key !== 'Enter') return;
         onButtonClickHandler();
     }
+
+    // 버튼 활성화 조건
+    const buttonClass = userEmail && userPassword ? 'button-on' : 'button-off';
 
     return (
         <div className='sign-up-wrapper'>
