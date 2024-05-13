@@ -77,6 +77,7 @@ function SignIn(props) {
         window.location.href = SNS_SIGN_IN_URL(type);
     }
 
+    // onKeyDown
     const onEmailKeyDownHandler = (event: KeyboardEvent<HTMLInputElement>) => {
         if(event.key !== 'Enter') return;
         if(!passwordRef.current) return;

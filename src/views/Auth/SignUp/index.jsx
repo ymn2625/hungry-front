@@ -12,6 +12,7 @@ import {
 } from "../../../apis/user/authURL";
 import ResponseCode from "../../../enums/response-code";
 import {useLocation} from "react-router-dom";
+import EmailAutoCompleteBox from "../../../components/emailAutoCompleteBox";
 
 function SignUp(props) {
 
@@ -28,15 +29,27 @@ function SignUp(props) {
     // value
     const [step, setStep] = useState(1);
 
+    const[emailList, setEmailList] = useState([]);
+    const[showEmailList, setShowEmailList] = useState(false);
+    const frequencyEmails = [
+        '@naver.com',
+        '@gmail.com',
+        '@daum.net',
+        '@hanmail.net',
+        '@nate.com',
+        '@kakao.com',
+    ];
+
+    const [previewImg, setPreviewImg] = useState(null);
+
     const [userEmail, setUserEmail] = useState('');
     const [userPassword, setUserPassword] = useState('');
     const [passwordCheck, setPasswordCheck] = useState('');
     const [userName, setUserName] = useState('');
     const [userTel, setUserTel] = useState('');
     const [certificationNumber, setCertificationNumber] = useState('');
-    const [userProfileImg, setUserProfileImg] = useState('');
+    const [userProfileImg, setUserProfileImg] = useState(null);
     const [userNickname, setUserNickname] = useState('');
-
     const [userType, setUserType] = useState('app');
 
     // error message
@@ -77,9 +90,29 @@ function SignUp(props) {
         const { value } = event.target;
         setUserEmail(value);
 
+        setEmailListAndShowEmailList(value);
+
         const check = emailPattern.test(value);
         (check) ? setEmailError('') : setEmailError('이메일 형식으로 입력해주세요');
+    }
 
+    const setEmailListAndShowEmailList = (value) => {
+        if(value !== '') {
+            let shouldHideEmailList = false;
+            if (value.includes('@')) {
+                shouldHideEmailList = frequencyEmails.some((email) => email === '@' + value.split('@')[1]);
+            }
+            const userEmails = frequencyEmails
+                .filter((email) => value.includes('@') ? email.includes('@' + value.split('@')[1]) : true)
+                .map((email) => value.includes('@') ? value.split('@')[0] + email : value + email);
+            setEmailList(userEmails);
+            setShowEmailList(true);
+            if (shouldHideEmailList) {
+                setShowEmailList(false);
+            }
+        } else {
+            setShowEmailList(false);
+        }
     }
 
     const onPasswordChangeHandler = (event) => {
@@ -100,7 +133,6 @@ function SignUp(props) {
         if(value.length > 13) return;
 
         (userPassword === value) ? setPasswordCheckError('') : setPasswordCheckError('비밀번호가 일치하지 않습니다');
-
     }
 
     const onNameChangeHandler = (event) => {
@@ -129,6 +161,21 @@ function SignUp(props) {
         (checkCertificationNumber) ? setCertificationNumberError('') : setCertificationNumberError('6자리 인증번호를 입력해주세요');
     }
 
+    const onProfileImgChangeHandler = (event) => {
+        const file = event.target.files[0];
+        setUserProfileImg(file);
+
+        // 이미지 미리보기
+        const reader = new FileReader();
+        reader.onloadend = () => {
+            setPreviewImg(reader.result);
+        };
+
+        if (file) {
+            reader.readAsDataURL(file);
+        }
+    };
+
     const onNicknameChangeHandler = (event) => {
         const { value } = event.target;
         setUserNickname(value);
@@ -143,6 +190,12 @@ function SignUp(props) {
         } else {
             setStep((prevStep) => prevStep - 1);
         }
+    }
+
+    const onEmailListClickHandler = (email) => {
+        setUserEmail(email);
+        setEmailError('');
+        setShowEmailList(false);
     }
 
     const onEmailPasswordButtonClickHandler = () => {
@@ -253,6 +306,7 @@ function SignUp(props) {
                         <div className='sign-up-content-input-box'>
                             <InputBox ref={emailRef} title='이메일' placeholder='이메일 입력' type='text' value={userEmail}
                                       onChange={onEmailChangeHandler} message={emailError}/>
+                            <EmailAutoCompleteBox emailList={emailList} showEmailList={showEmailList} onEmailListClickHandler={onEmailListClickHandler}/>
                             <InputBox ref={passwordRef} title='비밀번호' placeholder='8-13자 숫자, 문자, 특수문자 포함' type='password'
                                       value={userPassword}
                                       onChange={onPasswordChangeHandler} message={passwordError}/>
@@ -299,8 +353,9 @@ function SignUp(props) {
                         <div className='sign-up-profile-img-container'>
                             <div className='sign-up-profile-img-box' onClick={onProfileImgClickHandler}>
                                 <div className='sign-up-profile-img'
-                                     style={{backgroundImage: `url(${userProfileImg ? userProfileImg : defaultProfileImg})`}}></div>
-                                <input type='file' accept='image/*' style={{display: 'none'}}/>
+                                     style={{backgroundImage: `url(${previewImg ? previewImg : defaultProfileImg})`}}>
+                                    <input ref={profileImgRef} type='file' accept='image/*' style={{display: 'none'}} onChange={onProfileImgChangeHandler} />
+                                </div>
                             </div>
                         </div>
                         <div className='sign-up-content-input-box'>
