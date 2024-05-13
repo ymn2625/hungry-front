@@ -2,7 +2,7 @@ import {forwardRef, useState} from "react";
 import './style.css';
 
 const InputBox = forwardRef((props, ref) => {
-    const {title, placeholder, type, value, message, onChange, onKeyDown} = props;
+    const {name, title, placeholder, type, value, message, onChange, onKeyDown} = props;
 
     const [isFocus, setIsFocus] = useState(false);
 
@@ -19,7 +19,7 @@ const InputBox = forwardRef((props, ref) => {
         <div className='input-box'>
             <div className={contentClass}>
                 <div className='input-box-title'>{title}</div>
-                <input ref={ref} className='input-box-input' onFocus={onFocusHandler} onBlur={onBlurHandler} placeholder={placeholder} type={type} value={value} onChange={onChange} onKeyDown={onKeyDown}/>
+                <input className='input-box-input' name={name} ref={ref} onFocus={onFocusHandler} onBlur={onBlurHandler} placeholder={placeholder} type={type} value={value} onChange={onChange} onKeyDown={onKeyDown}/>
             </div>
             {!!message && <div className='input-box-message-error'>{message}</div>}
         </div>
