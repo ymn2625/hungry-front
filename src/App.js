@@ -1,9 +1,12 @@
 import './App.css';
-import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch, Routes, Link } from "react-router-dom";
 import SignUp from "./views/Auth/SignUp";
 import Nickname from "./views/Account/Nickname";
 import SignIn from "./views/Auth/SignIn";
 import {OAuth, SignUpOAuth} from "./views/Auth/OAuth";
+import Footer from "./components/footer";
+import SearchBarOnMap from "./components/searchBarOnMap";
+import SearchResults from "./views/Search/SearchResult/SearchResults";
 
 function App() {
 
@@ -23,6 +26,11 @@ function App() {
                   </ul>
               </nav>
           </div>
+          <Routes>
+              <Route path="/" element={<SearchBarOnMap />} />
+              <Route path="/search-results" element={<SearchResults />} />
+          </Routes>
+
 
           <Routes>
               <Route path='/account'>
@@ -35,6 +43,7 @@ function App() {
                   <Route path='oauth-response/:token/:expirationTime' element={<OAuth/>}></Route>
               </Route>
           </Routes>
+          <Footer/>
       </Router>
   );
 }
