@@ -1,6 +1,6 @@
-import {useEffect, useRef, useState} from "react";
-import {getPrivateApi} from "../../../apis/privateApi";
-import {GET_USER} from "../../../apis/user/accountURL";
+import {useEffect, useRef} from "react";
+import {getPrivateApi, patchPrivateApi} from "../../../apis/privateApi";
+import {GET_USER, PATCH_PROFILE_IMG_URL} from "../../../apis/user/accountURL";
 import ResponseCode from "../../../enums/response-code";
 import {useUserInfo} from "../../../stores/user_store";
 import {useNavigate} from "react-router-dom";
@@ -9,6 +9,7 @@ import defaultProfileImg from "../../../assets/images/default-profile-image.jpeg
 import camera from "../../../assets/images/camera-img.png";
 import './style.css';
 import InfoBox from "../../../components/infoBox";
+import {fileUploadRequest} from "../../../apis/publicApi";
 
 function MyPage (props) {
     // store
@@ -28,8 +29,19 @@ function MyPage (props) {
     }, []);
 
     // onChange
-    const onProfileImgChangeHandler = (event) => {
+    const onProfileImgChangeHandler = async (event) => {
+        if(!event.target.files || !event.target.files.length) return;
+        const file = event.target.files[0];
+        const profileImg = file;
 
+        const data = new FormData();
+        data.append('file', profileImg);
+
+        const userProfileImg = await fileUploadRequest(data);
+        const userEmail = userInfo.userEmail;
+
+        const requestBody = { userEmail, userProfileImg };
+        patchPrivateApi(PATCH_PROFILE_IMG_URL(), requestBody).then(patchProfileImgResponse);
     };
 
     // onClick
@@ -59,6 +71,21 @@ function MyPage (props) {
         if(code !== ResponseCode.SUCCESS) return;
 
         setUserInfo(responseBody);
+    }
+
+    const patchProfileImgResponse = (responseBody) => {
+        if(!responseBody) return;
+        const { code } = responseBody;
+
+        if(code === ResponseCode.VALIDATION_FAIL || code === ResponseCode.NOT_EXIST_USER) {
+            alert("다시 시도해주세요!");
+            navigate('/account/user');
+        }
+        if(code === ResponseCode.DATABASE_ERROR) alert('데이터베이스 오류입니다.');
+        if(code !== ResponseCode.SUCCESS) return;
+
+        alert("성공적으로 변경되었습니다.");
+        window.location.replace("http://localhost:3000/account/user");
     }
 
     return (
