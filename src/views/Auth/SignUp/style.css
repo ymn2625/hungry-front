@@ -31,13 +31,33 @@
 }
 
 .sign-up-profile-img {
-    width: 60px;
-    height: 60px;
+    width: 65px;
+    height: 65px;
 
     border-radius: 50%;
 
     background-position: 50% 50%;
     background-size: 100% 100%;
+
+    position: relative;
+}
+
+.sign-up-camera {
+    width: 18px;
+    height: 18px;
+
+    background-color: rgb(215, 215, 215);
+
+    border: 2px solid rgba(255, 255, 255);
+    border-radius: 50%;
+
+    background-position: 50% 50%;
+    background-size: 60% 60%;
+    background-repeat: no-repeat;
+
+    position: relative;
+    left: 47px;
+    top: 42px;
 }
 
 .sign-up-content-input-box {

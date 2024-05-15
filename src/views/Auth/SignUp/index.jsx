@@ -11,10 +11,13 @@ import {
     SMS_CERTIFICATION_URL
 } from "../../../apis/user/authURL";
 import ResponseCode from "../../../enums/response-code";
-import {useLocation} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import EmailAutoCompleteBox from "../../../components/emailAutoCompleteBox";
+import camera from "../../../assets/images/camera-img.png";
 
 function SignUp(props) {
+    // useNavigation
+    const navigate = useNavigate();
 
     // ref
     const emailRef = useRef(null);
@@ -59,6 +62,7 @@ function SignUp(props) {
     const [nameError, setNameError] = useState('');
     const [telError, setTelError] = useState('');
     const [certificationNumberError, setCertificationNumberError] = useState('');
+    const [nickNameError, setNicknameError] = useState('');
 
     // pattern
     const emailPattern = /^[a-zA-Z0-9]*@([-.]?[a-zA-Z0-9])*\.[a-zA-Z]{2,4}$/;
@@ -70,7 +74,7 @@ function SignUp(props) {
     const emailPasswordButtonClass = !emailError && !passwordError && !passwordCheckError && userEmail && userPassword && passwordCheck ? 'button-on' : 'button-off';
     const nameTelButtonClass = !nameError && !telError && userName && userTel ? 'button-on' : 'button-off';
     const certificationButtonClass = !certificationNumberError && certificationNumber ? 'button-on' : 'button-off';
-    const profileImgNicknameButtonClass = userNickname ? 'button-on' : 'button-off';
+    const profileImgNicknameButtonClass = (!nickNameError && userNickname) ? 'button-on' : 'button-off';
 
     // useLocation
     const location = useLocation();
@@ -176,14 +180,20 @@ function SignUp(props) {
     const onNicknameChangeHandler = (event) => {
         const { value } = event.target;
         setUserNickname(value);
+
+        if(value.length < 2) {
+            setNicknameError('닉네임을 2자 이상 입력해주세요');
+        } else {
+            setNicknameError('')
+        }
     }
 
     // onClick
     const onPrevClickHandler = () => {
         if(location.state != null && step === 2) {
-            window.location.replace('http://localhost:3000/auth/sign-in');
+            navigate('/auth/sign-in');
         } else if(step === 1) {
-            window.location.replace('http://localhost:3000/auth/sign-in');
+            navigate('/auth/sign-in');
         } else {
             setStep((prevStep) => prevStep - 1);
         }
@@ -228,7 +238,7 @@ function SignUp(props) {
     }
 
     const onProfileImgNicknameButtonClickHandler = async () => {
-        if(!userNickname) return;
+        if(!userNickname || nickNameError) return;
 
         const data = new FormData();
         data.append('file', profileImg);
@@ -275,7 +285,7 @@ function SignUp(props) {
 
         if(code === ResponseCode.SUCCESS && userEmail) {
             alert('이미 존재하는 회원입니다. 로그인 화면으로 이동합니다.');
-            window.location.replace('http://localhost:3000/auth/sign-in');
+            navigate('/auth/sign-in');
         }
 
         if(code !== ResponseCode.SUCCESS) return;
@@ -291,11 +301,11 @@ function SignUp(props) {
         if(code === ResponseCode.DATABASE_ERROR) alert('데이터베이스 오류입니다.');
         if(code === ResponseCode.DUPLICATE_EMAIL || code === ResponseCode.DUPLICATE_TEL) {
             alert('이미 존재하는 회원입니다.');
-            window.location.replace('http://localhost:3000/auth/sign-in');
+            navigate('/auth/sign-in');
         }
         if(code !== ResponseCode.SUCCESS) return;
 
-        window.location.replace('http://localhost:3000/auth/sign-in');
+        navigate('/auth/sign-in');
     }
 
     return (
@@ -356,13 +366,15 @@ function SignUp(props) {
                             <div className='sign-up-profile-img-box' onClick={onProfileImgClickHandler}>
                                 <div className='sign-up-profile-img'
                                      style={{backgroundImage: `url(${previewImg ? previewImg : defaultProfileImg})`}}>
-                                    <input ref={profileImgRef} type='file' accept='image/*' style={{display: 'none'}} onChange={onProfileImgChangeHandler} />
+                                    <input ref={profileImgRef} type='file' accept='image/*' style={{display: 'none'}}
+                                           onChange={onProfileImgChangeHandler}/>
+                                    <div className='sign-up-camera' style={{backgroundImage: `url(${camera}`}}></div>
                                 </div>
                             </div>
                         </div>
                         <div className='sign-up-content-input-box'>
                             <InputBox ref={nicknameRef} title='닉네임' placeholder='닉네임 입력' type='text'
-                                      value={userNickname}
+                                      value={userNickname} message={nickNameError}
                                       onChange={onNicknameChangeHandler}/>
                         </div>
                     </div>

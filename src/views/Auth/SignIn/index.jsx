@@ -38,7 +38,6 @@ function SignIn(props) {
     };
 
     // onClick
-    const onPrevClickHandler = () => {}
 
     const onButtonClickHandler = () => {
         if(!userEmail || !userPassword) {
@@ -93,7 +92,7 @@ function SignIn(props) {
 
     return (
         <div className='sign-up-wrapper'>
-            <HeaderBox onClick={onPrevClickHandler} title='로그인'/>
+            <HeaderBox title='로그인'/>
             <div className='sign-up-container'>
                 <div className='sign-up-content'>
                     <TitleBox title=' 배고팟 로그인' subTitle='배고팟과 함께 맛있는 한 끼!'></TitleBox>
