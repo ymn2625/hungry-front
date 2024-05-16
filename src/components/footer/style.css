@@ -1,0 +1,36 @@
+/* Footer.css */
+
+.footer {
+    position: absolute;
+    bottom: 34px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80px;
+    width: 393px;
+    background-color: #333;
+    padding: 0;
+}
+
+.footer-section {
+    width: 100px;
+    margin: 0 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: blue;
+}
+
+.title {
+    color: white;
+    margin-top: 2px;
+    overflow: scroll;
+}
+
+.logo-box {
+    width: 48px; /* 로고 상자 너비 조정 */
+    height: 48px; /* 로고 상자 높이 조정 */
+    background-color: black; /* 검정색 로고 상자 배경 */
+    margin-bottom: 0px; /* 로고 상자와 메뉴 이름 사이의 간격 조정 */
+    margin-top: 4px;
+}
