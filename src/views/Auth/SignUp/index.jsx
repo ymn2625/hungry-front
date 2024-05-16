@@ -14,6 +14,7 @@ import ResponseCode from "../../../enums/response-code";
 import {useLocation, useNavigate} from "react-router-dom";
 import EmailAutoCompleteBox from "../../../components/emailAutoCompleteBox";
 import camera from "../../../assets/images/camera-img.png";
+import {CertificationBox, TelBox} from "../../../components/telCertificationBox";
 
 function SignUp(props) {
     // useNavigation
@@ -30,7 +31,7 @@ function SignUp(props) {
     const nicknameRef = useRef(null);
 
     // value
-    const [step, setStep] = useState(1);
+    const [step, setStep] = useState(2);
 
     const[emailList, setEmailList] = useState([]);
     const[showEmailList, setShowEmailList] = useState(false);
@@ -146,9 +147,9 @@ function SignUp(props) {
 
     const onTelChangeHandler = (event) => {
         const { value } = event.target;
-        setUserTel(value);
-
         if(value.length > 11) return;
+
+        setUserTel(value);
 
         const checkTel = telPattern.test(value);
         (checkTel) ? setTelError('') : setTelError('휴대폰 번호를 다시 확인하세요');
@@ -157,9 +158,9 @@ function SignUp(props) {
 
     const onCertificationChangeHandler = (event) => {
         const { value } = event.target;
-        setCertificationNumber(value);
-
         if(value.length > 6) return;
+
+        setCertificationNumber(value);
 
         const checkCertificationNumber = certificationNumberPattern.test(value);
         (checkCertificationNumber) ? setCertificationNumberError('') : setCertificationNumberError('6자리 인증번호를 입력해주세요');
@@ -308,6 +309,29 @@ function SignUp(props) {
         navigate('/auth/sign-in');
     }
 
+    // props
+    const telBoxProps = {
+        nameRef,
+        userName,
+        onNameChangeHandler,
+        nameError,
+        telRef,
+        userTel,
+        onTelChangeHandler,
+        telError,
+        nameTelButtonClass,
+        onNameTelButtonClickHandler
+    }
+
+    const certificationBoxProps = {
+        certificationNumberRef,
+        certificationNumber,
+        onCertificationChangeHandler,
+        certificationNumberError,
+        certificationButtonClass,
+        onCertificationButtonClickHandler
+    }
+
     return (
         <div className='sign-up-wrapper'>
             <HeaderBox onClick={onPrevClickHandler} title='회원가입'/>
@@ -331,32 +355,10 @@ function SignUp(props) {
                 </div>
             }
             {step === 2 &&
-                <div className='sign-up-container'>
-                    <div className='sign-up-content'>
-                        <TitleBox title='휴대폰 인증' subTitle='최초 1회 휴대폰 인증이 필요합니다'></TitleBox>
-                        <div className='sign-up-content-input-box'>
-                            <InputBox ref={nameRef} title='이름' placeholder='이름 입력' type='text' value={userName}
-                                      onChange={onNameChangeHandler} message={nameError}/>
-                            <InputBox ref={telRef} title='휴대폰 번호' placeholder='01012341234' type='text'
-                                      value={userTel}
-                                      onChange={onTelChangeHandler} message={telError}/>
-                        </div>
-                    </div>
-                    <div className={nameTelButtonClass} onClick={onNameTelButtonClickHandler}>다음</div>
-                </div>
+                <TelBox {...telBoxProps}/>
             }
             {step === 3 &&
-                <div className='sign-up-container'>
-                    <div className='sign-up-content'>
-                        <TitleBox title='인증번호' subTitle='문자로 받은 인증번호를 입력하세요'></TitleBox>
-                        <div className='sign-up-content-input-box'>
-                            <InputBox ref={certificationNumberRef} title='인증번호' placeholder='인증번호 6자리 입력'
-                                      type='text' value={certificationNumber}
-                                      onChange={onCertificationChangeHandler} message={certificationNumberError}/>
-                        </div>
-                    </div>
-                    <div className={certificationButtonClass} onClick={onCertificationButtonClickHandler}>다음</div>
-                </div>
+                <CertificationBox {...certificationBoxProps}/>
             }
             {step === 4 &&
                 <div className='sign-up-container'>
