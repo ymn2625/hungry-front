@@ -31,7 +31,7 @@ function SignUp(props) {
     const nicknameRef = useRef(null);
 
     // value
-    const [step, setStep] = useState(2);
+    const [step, setStep] = useState(1);
 
     const[emailList, setEmailList] = useState([]);
     const[showEmailList, setShowEmailList] = useState(false);
@@ -91,7 +91,7 @@ function SignUp(props) {
     }, [location.state?.email, location.state?.type]);
 
     // onChange
-    const onEmailChangeHandler = (event: KeyboardEvent<HTMLInputElement>) => {
+    const onEmailChangeHandler = (event) => {
         const { value } = event.target;
         setUserEmail(value);
 
