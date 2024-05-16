@@ -1,0 +1,25 @@
+.email-list-box {
+    padding: 3px;
+
+    border-radius: 3px;
+
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.email-list-box-none {
+    display: none;
+}
+
+.email-list {
+    padding: 7px;
+
+    border-radius: 3px;
+
+    font-size: 14px;
+    font-weight: 400;
+}
+
+.email-list:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+

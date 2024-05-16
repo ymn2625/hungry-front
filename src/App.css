@@ -72,3 +72,23 @@
 
     cursor: pointer;
 }
+
+.text-link-container {
+    display: flex;
+    justify-content: center;
+
+    margin: 20px 0;
+
+    font-size: 14px;
+    font-weight: 400;
+
+    color: rgba(0, 0, 0, 0.5);
+}
+
+.text-link {
+    cursor: pointer;
+}
+
+.text-link:hover {
+    color: rgba(0, 0, 0, 0.3);
+}

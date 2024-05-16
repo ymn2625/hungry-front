@@ -25,25 +25,6 @@ function SignIn(props) {
     // error
     const [message, setMessage] = useState('');
 
-    // response
-    const signInResponse = (responseBody) => {
-        if(!responseBody) return;
-        const { code } = responseBody;
-
-        if(code === ResponseCode.VALIDATION_FAIL) alert('아이디 또는 비밀번호의 형식을 확인하세요.');
-        if(code === ResponseCode.SIGN_IN_FAIL) setMessage('로그인 정보가 일치하지 않습니다.');
-        if(code === ResponseCode.DATABASE_ERROR) alert('데이터베이스 오류입니다.');
-        if(code !== ResponseCode.SUCCESS) return;
-
-        const { token, expirationTime } = responseBody;
-
-        window.localStorage.setItem('accessToken', token);
-        setTimeout(() => {
-            window.localStorage.removeItem('accessToken');
-        }, expirationTime);
-        navigate('/');
-    }
-
     // onChange
     const onEmailChangeHandler = (event) => {
         const { value } = event.target;
@@ -57,7 +38,6 @@ function SignIn(props) {
     };
 
     // onClick
-    const onPrevClickHandler = () => {}
 
     const onButtonClickHandler = () => {
         if(!userEmail || !userPassword) {
@@ -77,6 +57,26 @@ function SignIn(props) {
         window.location.href = SNS_SIGN_IN_URL(type);
     }
 
+    // response
+    const signInResponse = (responseBody) => {
+        if(!responseBody) return;
+        const { code } = responseBody;
+
+        if(code === ResponseCode.VALIDATION_FAIL) alert('아이디 또는 비밀번호의 형식을 확인하세요.');
+        if(code === ResponseCode.SIGN_IN_FAIL) setMessage('로그인 정보가 일치하지 않습니다.');
+        if(code === ResponseCode.DATABASE_ERROR) alert('데이터베이스 오류입니다.');
+        if(code !== ResponseCode.SUCCESS) return;
+
+        const { token, expirationTime } = responseBody;
+
+        window.localStorage.setItem('accessToken', token);
+        setTimeout(() => {
+            window.localStorage.removeItem('accessToken');
+        }, expirationTime);
+        navigate('/');
+    }
+
+    // onKeyDown
     const onEmailKeyDownHandler = (event: KeyboardEvent<HTMLInputElement>) => {
         if(event.key !== 'Enter') return;
         if(!passwordRef.current) return;
@@ -92,7 +92,7 @@ function SignIn(props) {
 
     return (
         <div className='sign-up-wrapper'>
-            <HeaderBox onClick={onPrevClickHandler} title='로그인'/>
+            <HeaderBox title='로그인'/>
             <div className='sign-up-container'>
                 <div className='sign-up-content'>
                     <TitleBox title=' 배고팟 로그인' subTitle='배고팟과 함께 맛있는 한 끼!'></TitleBox>

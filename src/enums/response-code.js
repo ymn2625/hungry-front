@@ -4,6 +4,7 @@ const ResponseCode = {
     VALIDATION_FAIL: "VF",
     DUPLICATE_EMAIL: "DE",
     DUPLICATE_TEL: "DT",
+    NOT_EXIST_USER: "NU",
 
     SIGN_IN_FAIL: "SF",
     CERTIFICATION_FAIL: "CF",

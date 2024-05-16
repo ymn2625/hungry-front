@@ -4,16 +4,20 @@ import defaultProfileImg from "../../../assets/images/default-profile-image.jpeg
 import TitleBox from "../../../components/titleBox";
 import InputBox from "../../../components/inputBox";
 import HeaderBox from "../../../components/headerBox";
-import {postPublicApi} from "../../../apis/publicApi";
+import {fileUploadRequest, postPublicApi} from "../../../apis/publicApi";
 import {
     CHECK_CERTIFICATION_URL,
     CHECK_EMAIL_URL, SIGN_UP_URL,
     SMS_CERTIFICATION_URL
 } from "../../../apis/user/authURL";
 import ResponseCode from "../../../enums/response-code";
-import {useLocation} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
+import EmailAutoCompleteBox from "../../../components/emailAutoCompleteBox";
+import camera from "../../../assets/images/camera-img.png";
 
 function SignUp(props) {
+    // useNavigation
+    const navigate = useNavigate();
 
     // ref
     const emailRef = useRef(null);
@@ -28,15 +32,27 @@ function SignUp(props) {
     // value
     const [step, setStep] = useState(1);
 
+    const[emailList, setEmailList] = useState([]);
+    const[showEmailList, setShowEmailList] = useState(false);
+    const frequencyEmails = [
+        '@naver.com',
+        '@gmail.com',
+        '@daum.net',
+        '@hanmail.net',
+        '@nate.com',
+        '@kakao.com',
+    ];
+
+    const [previewImg, setPreviewImg] = useState(null);
+
     const [userEmail, setUserEmail] = useState('');
     const [userPassword, setUserPassword] = useState('');
     const [passwordCheck, setPasswordCheck] = useState('');
     const [userName, setUserName] = useState('');
     const [userTel, setUserTel] = useState('');
     const [certificationNumber, setCertificationNumber] = useState('');
-    const [userProfileImg, setUserProfileImg] = useState('');
+    const [profileImg, setProfileImg] = useState(null);
     const [userNickname, setUserNickname] = useState('');
-
     const [userType, setUserType] = useState('app');
 
     // error message
@@ -46,6 +62,7 @@ function SignUp(props) {
     const [nameError, setNameError] = useState('');
     const [telError, setTelError] = useState('');
     const [certificationNumberError, setCertificationNumberError] = useState('');
+    const [nickNameError, setNicknameError] = useState('');
 
     // pattern
     const emailPattern = /^[a-zA-Z0-9]*@([-.]?[a-zA-Z0-9])*\.[a-zA-Z]{2,4}$/;
@@ -57,7 +74,7 @@ function SignUp(props) {
     const emailPasswordButtonClass = !emailError && !passwordError && !passwordCheckError && userEmail && userPassword && passwordCheck ? 'button-on' : 'button-off';
     const nameTelButtonClass = !nameError && !telError && userName && userTel ? 'button-on' : 'button-off';
     const certificationButtonClass = !certificationNumberError && certificationNumber ? 'button-on' : 'button-off';
-    const profileImgNicknameButtonClass = userNickname ? 'button-on' : 'button-off';
+    const profileImgNicknameButtonClass = (!nickNameError && userNickname) ? 'button-on' : 'button-off';
 
     // useLocation
     const location = useLocation();
@@ -77,9 +94,29 @@ function SignUp(props) {
         const { value } = event.target;
         setUserEmail(value);
 
+        setEmailListAndShowEmailList(value);
+
         const check = emailPattern.test(value);
         (check) ? setEmailError('') : setEmailError('이메일 형식으로 입력해주세요');
+    }
 
+    const setEmailListAndShowEmailList = (value) => {
+        if(value !== '') {
+            let shouldHideEmailList = false;
+            if (value.includes('@')) {
+                shouldHideEmailList = frequencyEmails.some((email) => email === '@' + value.split('@')[1]);
+            }
+            const userEmails = frequencyEmails
+                .filter((email) => value.includes('@') ? email.includes('@' + value.split('@')[1]) : true)
+                .map((email) => value.includes('@') ? value.split('@')[0] + email : value + email);
+            setEmailList(userEmails);
+            setShowEmailList(true);
+            if (shouldHideEmailList) {
+                setShowEmailList(false);
+            }
+        } else {
+            setShowEmailList(false);
+        }
     }
 
     const onPasswordChangeHandler = (event) => {
@@ -100,7 +137,6 @@ function SignUp(props) {
         if(value.length > 13) return;
 
         (userPassword === value) ? setPasswordCheckError('') : setPasswordCheckError('비밀번호가 일치하지 않습니다');
-
     }
 
     const onNameChangeHandler = (event) => {
@@ -129,20 +165,44 @@ function SignUp(props) {
         (checkCertificationNumber) ? setCertificationNumberError('') : setCertificationNumberError('6자리 인증번호를 입력해주세요');
     }
 
+    const onProfileImgChangeHandler = (event) => {
+        if(!event.target.files || !event.target.files.length) return;
+        const file = event.target.files[0];
+        const imageUrl = URL.createObjectURL(file);
+        setPreviewImg(imageUrl);
+        setProfileImg(file);
+
+        // 같은 파일 선택시 변경 안됨 방지
+        if(!profileImgRef.current) return;
+        profileImgRef.current.value = '';
+    };
+
     const onNicknameChangeHandler = (event) => {
         const { value } = event.target;
         setUserNickname(value);
+
+        if(value.length < 2) {
+            setNicknameError('닉네임을 2자 이상 입력해주세요');
+        } else {
+            setNicknameError('')
+        }
     }
 
     // onClick
     const onPrevClickHandler = () => {
         if(location.state != null && step === 2) {
-            window.location.replace('http://localhost:3000/auth/sign-in');
+            navigate('/auth/sign-in');
         } else if(step === 1) {
-            window.location.replace('http://localhost:3000/auth/sign-in');
+            navigate('/auth/sign-in');
         } else {
             setStep((prevStep) => prevStep - 1);
         }
+    }
+
+    const onEmailListClickHandler = (email) => {
+        setUserEmail(email);
+        setEmailError('');
+        setShowEmailList(false);
     }
 
     const onEmailPasswordButtonClickHandler = () => {
@@ -177,8 +237,14 @@ function SignUp(props) {
         profileImgRef.current.click();
     }
 
-    const onProfileImgNicknameButtonClickHandler = () => {
-        if(!userNickname) return;
+    const onProfileImgNicknameButtonClickHandler = async () => {
+        if(!userNickname || nickNameError) return;
+
+        const data = new FormData();
+        data.append('file', profileImg);
+
+        const userProfileImg = await fileUploadRequest(data);
+        alert(userProfileImg);
 
         const requestBody = { userEmail, userPassword, userName, userTel, userProfileImg, userNickname, userType };
         postPublicApi(SIGN_UP_URL(), requestBody).then(signUpResponse);
@@ -217,10 +283,9 @@ function SignUp(props) {
         if(code === ResponseCode.DATABASE_ERROR) alert('데이터베이스 오류입니다.');
         if(code === ResponseCode.CERTIFICATION_FAIL) setCertificationNumberError('인증번호가 일치하지 않습니다.')
 
-        console.log(userEmail);
         if(code === ResponseCode.SUCCESS && userEmail) {
             alert('이미 존재하는 회원입니다. 로그인 화면으로 이동합니다.');
-            window.location.replace('http://localhost:3000/auth/sign-in');
+            navigate('/auth/sign-in');
         }
 
         if(code !== ResponseCode.SUCCESS) return;
@@ -236,11 +301,11 @@ function SignUp(props) {
         if(code === ResponseCode.DATABASE_ERROR) alert('데이터베이스 오류입니다.');
         if(code === ResponseCode.DUPLICATE_EMAIL || code === ResponseCode.DUPLICATE_TEL) {
             alert('이미 존재하는 회원입니다.');
-            window.location.replace('http://localhost:3000/auth/sign-in');
+            navigate('/auth/sign-in');
         }
         if(code !== ResponseCode.SUCCESS) return;
 
-        window.location.replace('http://localhost:3000/auth/sign-in');
+        navigate('/auth/sign-in');
     }
 
     return (
@@ -253,6 +318,7 @@ function SignUp(props) {
                         <div className='sign-up-content-input-box'>
                             <InputBox ref={emailRef} title='이메일' placeholder='이메일 입력' type='text' value={userEmail}
                                       onChange={onEmailChangeHandler} message={emailError}/>
+                            <EmailAutoCompleteBox emailList={emailList} showEmailList={showEmailList} onEmailListClickHandler={onEmailListClickHandler}/>
                             <InputBox ref={passwordRef} title='비밀번호' placeholder='8-13자 숫자, 문자, 특수문자 포함' type='password'
                                       value={userPassword}
                                       onChange={onPasswordChangeHandler} message={passwordError}/>
@@ -299,13 +365,16 @@ function SignUp(props) {
                         <div className='sign-up-profile-img-container'>
                             <div className='sign-up-profile-img-box' onClick={onProfileImgClickHandler}>
                                 <div className='sign-up-profile-img'
-                                     style={{backgroundImage: `url(${userProfileImg ? userProfileImg : defaultProfileImg})`}}></div>
-                                <input type='file' accept='image/*' style={{display: 'none'}}/>
+                                     style={{backgroundImage: `url(${previewImg ? previewImg : defaultProfileImg})`}}>
+                                    <input ref={profileImgRef} type='file' accept='image/*' style={{display: 'none'}}
+                                           onChange={onProfileImgChangeHandler}/>
+                                    <div className='sign-up-camera' style={{backgroundImage: `url(${camera}`}}></div>
+                                </div>
                             </div>
                         </div>
                         <div className='sign-up-content-input-box'>
                             <InputBox ref={nicknameRef} title='닉네임' placeholder='닉네임 입력' type='text'
-                                      value={userNickname}
+                                      value={userNickname} message={nickNameError}
                                       onChange={onNicknameChangeHandler}/>
                         </div>
                     </div>

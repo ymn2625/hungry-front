@@ -1,0 +1,27 @@
+.user-info-box {
+    display: flex;
+    justify-content: space-between;
+
+    padding: 15px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.last {
+    border: none;
+}
+
+.click:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.info {
+    font-size: 14px;
+    font-weight: 500;
+    color: rgba(0, 0, 0, 1);
+}
+
+.user-info {
+    font-size: 14px;
+    font-weight: 500;
+    color: rgba(0, 0, 0, 0.5);
+}
