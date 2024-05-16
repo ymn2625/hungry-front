@@ -2,6 +2,7 @@
     max-width: 393px;
     height: 852px;
     border: 1px solid rgba(0, 0, 0, 0.2);
+    position: relative;
 
     /*padding: 20px;*/
 }

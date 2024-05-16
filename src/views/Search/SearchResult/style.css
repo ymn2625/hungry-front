@@ -1,0 +1,38 @@
+/* SearchResults.css */
+
+.search {
+    position: absolute;
+    height: 44px;
+    top: 59px;
+}
+
+
+.back-button {
+
+    height: 42px;
+    display: inline-block;
+    text-decoration: none;
+}
+
+.input-search[type="text"] {
+    position: absolute;
+    top:2px;
+    left:36px;
+    width: 320px;
+    height: 40px;
+    border: none;
+    outline: none;
+    font-size: 24px;
+    padding-left: 8px;
+    color: #333;
+
+}
+
+
+.search-results-container {
+    position: absolute;
+    top: 103px;
+    width: 393px;
+    height: 635px;
+    color: black;
+}

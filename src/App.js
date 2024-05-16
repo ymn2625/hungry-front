@@ -6,26 +6,13 @@ import SignIn from "./views/Auth/SignIn";
 import {OAuth, SignUpOAuth} from "./views/Auth/OAuth";
 import Footer from "./components/footer";
 import SearchBarOnMap from "./components/searchBarOnMap";
-import SearchResults from "./views/Search/SearchResult/SearchResults";
+import SearchResults from "./views/Search/SearchResult/index";
 
 function App() {
 
   return (
       <Router>
 
-          <div>
-              <h1>사이트의 홈페이지</h1>
-              <nav>
-                  <ul>
-                      <li>
-                          <Link to="/auth/sign-in">로그인</Link>
-                      </li>
-                      <li>
-                          <Link to="/auth/sign-up">회원가입</Link>
-                      </li>
-                  </ul>
-              </nav>
-          </div>
           <Routes>
               <Route path="/" element={<SearchBarOnMap />} />
               <Route path="/search-results" element={<SearchResults />} />

@@ -6,14 +6,10 @@ import useStore from "../../zustand/useStore"; // 경로는 실제로 사용하�
 
 
 function SearchBarOnMap() {
-    const searchKeyword = useStore((state) => state.searchKeyword);
-    const setSearchKeyword = useStore((state) => state.setSearchKeyword);
 
     const navigate = useNavigate(); // useNavigate로 변경
 
-    const handleChange = (event) => {
-        setSearchKeyword(event.target.value);
-    };
+
 
     const handleSearch = () => {
         // 검색 버튼을 클릭하면 검색 결과 페이지로 이동
@@ -22,11 +18,11 @@ function SearchBarOnMap() {
 
     return (
         <div className="search-bar">
-            <input
+            <input className="input-button"
                 type="text"
-                placeholder="음식점 검색"
-                value={searchKeyword}
-                onChange={handleChange}
+                placeholder="장소, 음식점 검색"
+
+                onClick={handleSearch}
             />
             <button className="search-button" onClick={handleSearch}><IconSearch/></button>
         </div>
