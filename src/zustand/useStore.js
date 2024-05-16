@@ -17,7 +17,11 @@ const useStore = create((set) => ({
             // 응답 데이터 유효성 검사
             if (response && Array.isArray(response)) {
                 // 응답 데이터가 유효하면 searchResults에 저장
-                set({ searchResults: response });
+                if(keyword !== '') {
+                    set({searchResults: response});
+                }else{
+                    set({ searchResults: [] });
+                }
                 if (response.length > 0) {
                     console.log(response[0].storeName); // 첫 번째 아이템 출력
                 } else {
