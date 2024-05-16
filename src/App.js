@@ -4,13 +4,20 @@ import SignUp from "./views/Auth/SignUp";
 import Nickname from "./views/Account/Nickname";
 import SignIn from "./views/Auth/SignIn";
 import {OAuth, SignUpOAuth} from "./views/Auth/OAuth";
-import MyPage from "./views/Account/MyPage";
+import Footer from "./components/footer";
+import SearchBarOnMap from "./components/searchBarOnMap";
+import SearchResults from "./views/Search/SearchResult/index";
+
+
 
 function App() {
 
   return (
     <Router>
         <Routes>
+            <Route path="/" element={<SearchBarOnMap />} />
+            <Route path="/search-results" element={<SearchResults />} />
+
             <Route path='/account'>
                 <Route path='user' element={<MyPage/>}></Route>
                 <Route path='nickname' element={<Nickname/>}></Route>
@@ -22,6 +29,7 @@ function App() {
                 <Route path='oauth-response/:token/:expirationTime' element={<OAuth/>}></Route>
             </Route>
         </Routes>
+        <Footer/>
     </Router>
   );
 }
