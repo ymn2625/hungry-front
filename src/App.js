@@ -16,10 +16,7 @@ function App() {
           <Routes>
               <Route path="/" element={<SearchBarOnMap />} />
               <Route path="/search-results" element={<SearchResults />} />
-          </Routes>
 
-
-          <Routes>
               <Route path='/account'>
                   <Route path='nickname' element={<Nickname/>}></Route>
               </Route>
