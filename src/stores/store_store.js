@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import { SEARCH_LIST } from "../apis/search/searchURL";
 import { postPrivateApi } from "../apis/privateApi";
 
-const useStore = create((set) => ({
+const store_store = create((set) => ({
     searchKeyword: '',
     searchResults: [],
 
@@ -40,4 +40,4 @@ const useStore = create((set) => ({
     },
 }));
 
-export default useStore;
+export default store_store;
