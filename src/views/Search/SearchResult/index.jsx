@@ -1,6 +1,6 @@
 import React, {useEffect, useRef} from 'react';
 import {Link, useNavigate} from 'react-router-dom';
-import useStore from "../../../zustand/useStore"; // 경로는 실제로 사용하는 위치에 맞게 수정하세요.
+import useStore from "../../../stores/store_store"; // 경로는 실제로 사용하는 위치에 맞게 수정하세요.
 import './style.css';
 import IconBack from "../../../components/bootstrapIcon/IconBack_BS"; // 스타일 파일을 import
 
