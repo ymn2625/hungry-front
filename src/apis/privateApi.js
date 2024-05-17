@@ -11,6 +11,17 @@ const privateApi = axios.create({
     }
 });
 
+privateApi.interceptors.request.use(
+    (config) => {
+        config.withCredentials = true;
+        config.headers.Authorization = `Bearer ${localStorage.getItem('accessToken')}`
+
+        return config;
+    },
+    (error) => {
+        Promise.reject(error);
+    }
+)
 
 privateApi.interceptors.response.use(
     (response) => {
