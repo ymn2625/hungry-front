@@ -7,6 +7,7 @@ import {OAuth, SignUpOAuth} from "./views/Auth/OAuth";
 import Footer from "./components/footer";
 import SearchBarOnMap from "./components/searchBarOnMap";
 import SearchResults from "./views/Search/SearchResult/index";
+import MyPage from "./views/Account/MyPage";
 
 
 
