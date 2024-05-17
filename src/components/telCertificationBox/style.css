@@ -1,0 +1,15 @@
+.tel-certification-container {
+    flex: 1;
+
+    display: flex;
+    flex-direction: column;
+
+    justify-content: space-between;
+}
+
+.tel-certification-content-input-box {
+    display: flex;
+    flex-direction: column;
+
+    gap: 5px;
+}

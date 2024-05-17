@@ -2,11 +2,13 @@ import {forwardRef, useState} from "react";
 import './style.css';
 
 const InputBox = forwardRef((props, ref) => {
-    const {title, placeholder, type, value, message, onChange, onKeyDown, list} = props;
+    const {title, placeholder, type, value, message, onChange, onKeyDown, list, isReadOnly} = props;
 
     const [isFocus, setIsFocus] = useState(false);
 
     const contentClass = !!message ? 'input-box-content-error' : (isFocus ? 'input-box-content-focus' : 'input-box-content');
+
+    const readOnly = (isReadOnly) ? isReadOnly : false;
 
     const onFocusHandler = () => {
         setIsFocus(true);
@@ -19,7 +21,7 @@ const InputBox = forwardRef((props, ref) => {
         <div className='input-box'>
             <div className={contentClass}>
                 <div className='input-box-title'>{title}</div>
-                <input className='input-box-input' ref={ref} onFocus={onFocusHandler} onBlur={onBlurHandler} placeholder={placeholder} type={type} value={value} onChange={onChange} onKeyDown={onKeyDown} list={list}/>
+                <input className='input-box-input' ref={ref} onFocus={onFocusHandler} onBlur={onBlurHandler} placeholder={placeholder} type={type} value={value} onChange={onChange} onKeyDown={onKeyDown} list={list} readOnly={readOnly}/>
             </div>
             {!!message && <div className='input-box-message-error'>{message}</div>}
         </div>
