@@ -10,6 +10,7 @@ import SearchResults from "./views/Search/SearchResult/index";
 import MyPage from "./views/Account/MyPage";
 import Tel from "./views/Account/Tel";
 import Password from "./views/Account/Password";
+import FindAccount from "./views/Auth/FindAccount";
 
 
 
@@ -49,6 +50,7 @@ function App() {
                     <Route path='sign-in' element={<LayoutWithPadding><SignIn/></LayoutWithPadding>}></Route>
                     <Route path='sign-up-oauth/:userEmail/:userType' element={<LayoutWithPadding><SignUpOAuth/></LayoutWithPadding>}></Route>
                     <Route path='oauth-response/:token/:expirationTime' element={<LayoutWithPadding><OAuth/></LayoutWithPadding>}></Route>
+                    <Route path='find-account' element={<LayoutWithPadding><FindAccount/></LayoutWithPadding>}></Route>
                 </Route>
             </Routes>
         </Router>

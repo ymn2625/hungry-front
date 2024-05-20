@@ -38,7 +38,7 @@ function Password (props) {
         setIsPasswordCheck(false);
 
         const { value } = event.target;
-
+        if(value.length > 13) return;
         setValue(value);
 
         const checkPassword = passwordPattern.test(value);
@@ -47,7 +47,7 @@ function Password (props) {
 
     const onNewPasswordChangeHandler = (event) => {
         const { value } = event.target;
-
+        if(value.length > 13) return;
         setNewPassword(value);
 
         const checkNewPassword = passwordPattern.test(value);
@@ -71,7 +71,6 @@ function Password (props) {
             if(!newPassword || !value || message || newPasswordError) {
                 return;
             }
-            console.log(userEmail + " " + newPassword);
             const requestBody = { userEmail , userPassword: newPassword  };
             patchPrivateApi(PATCH_PASSWORD_URL(), requestBody).then(patchPasswordResponse);
         }

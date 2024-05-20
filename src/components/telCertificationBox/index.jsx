@@ -7,7 +7,7 @@ export const TelBox = (props) => {
     return (
         <div className='tel-certification-container'>
             <div className='tel-certification-content'>
-                <TitleBox title='휴대폰 인증' subTitle='최초 1회 휴대폰 인증이 필요합니다'></TitleBox>
+                <TitleBox title='휴대폰 인증' subTitle='휴대폰 인증이 필요합니다'></TitleBox>
                 <div className='tel-certification-content-input-box'>
                     <InputBox ref={props.nameRef} title='이름' placeholder='이름 입력' type='text' value={props.userName}
                               onChange={props.onNameChangeHandler} message={props.nameError} isReadOnly={props.isReadOnly}/>
