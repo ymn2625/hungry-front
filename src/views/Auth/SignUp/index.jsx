@@ -225,11 +225,11 @@ function SignUp(props) {
     }
 
     const onCertificationButtonClickHandler = () => {
-        if(!certificationNumber || !userTel) {
+        if(!certificationNumber || !userTel || telError) {
             return;
         }
 
-        const requestBody = { userTel, certificationNumber };
+        const requestBody = { userName, userTel, certificationNumber };
         postPublicApi(CHECK_CERTIFICATION_URL(), requestBody).then(checkCertificationResponse);
     }
 

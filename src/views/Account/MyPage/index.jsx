@@ -92,25 +92,28 @@ function MyPage (props) {
         <div className='wrapper'>
             <HeaderBox onClick={onPrevClickHandler} title='마이페이지'/>
             <div className='content-wrapper'>
-                <div className='profile-img-box'>
-                    <div className='profile-img' onClick={onProfileImgClickHandler}
-                         style={{backgroundImage: `url(${userInfo.userProfileImg ? userInfo.userProfileImg : defaultProfileImg})`}}>
-                        <input ref={profileImgRef} type='file' accept='image/*' style={{display: 'none'}}
-                               onChange={onProfileImgChangeHandler}/>
-                        <div className='camera' style={{backgroundImage: `url(${camera}`}}></div>
+                <div>
+                    <div className='profile-img-box'>
+                        <div className='profile-img' onClick={onProfileImgClickHandler}
+                             style={{backgroundImage: `url(${userInfo.userProfileImg ? userInfo.userProfileImg : defaultProfileImg})`}}>
+                            <input ref={profileImgRef} type='file' accept='image/*' style={{display: 'none'}}
+                                   onChange={onProfileImgChangeHandler}/>
+                            <div className='camera' style={{backgroundImage: `url(${camera}`}}></div>
+                        </div>
+                    </div>
+                    <div className='user-info-wrapper'>
+                        <InfoBox title='닉네임' value={userInfo.userNickname} url='/account/nickname'/>
+                        <InfoBox title='이메일' value={userInfo.userEmail}/>
+                        <InfoBox title='이름' value={userInfo.userName}/>
+                        <InfoBox title='휴대폰 번호' value={userInfo.userTel} url='/account/tel'/>
+                        {userInfo.userType === 'app' && <InfoBox title='비밀번호' value='********' url='/account/password'/>}
+                        <InfoBox title='연결된 소셜 계정' value={userInfo.userType} isLast={true}/>
                     </div>
                 </div>
-                <div className='user-info-wrapper'>
-                    <InfoBox title='닉네임' value={userInfo.userNickname} url='/account/nickname'/>
-                    <InfoBox title='이메일' value={userInfo.userEmail}/>
-                    <InfoBox title='이름' value={userInfo.userName}/>
-                    <InfoBox title='휴대폰 번호' value={userInfo.userTel} url = '/account/tel' />
-                    <InfoBox title='연결된 소셜 계정' value={userInfo.userType} isLast={true} />
+                <div className='text-link-container'>
+                    <span className='text-link' onClick={onSignOutTextClick}>로그아웃</span>&nbsp;|&nbsp;<span
+                    className='text-link' onClick={onResignationClick}>회원탈퇴</span>
                 </div>
-            </div>
-            <div className='text-link-container'>
-                <span className='text-link' onClick={onSignOutTextClick}>로그아웃</span>&nbsp;|&nbsp;<span
-                className='text-link' onClick={onResignationClick}>회원탈퇴</span>
             </div>
         </div>
     )

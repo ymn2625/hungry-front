@@ -8,6 +8,8 @@ import Footer from "./components/footer";
 import SearchBarOnMap from "./components/searchBarOnMap";
 import SearchResults from "./views/Search/SearchResult/index";
 import MyPage from "./views/Account/MyPage";
+import Tel from "./views/Account/Tel";
+import Password from "./views/Account/Password";
 
 
 
@@ -21,6 +23,15 @@ function App() {
         </>
     );
 
+    // padding이 필요한 레이아웃 컴포넌트
+    const LayoutWithPadding = ({ children }) => (
+        <>
+            <div className='padding-box'>
+                {children}
+            </div>
+        </>
+    );
+
     return (
         <Router>
             <Routes>
@@ -28,14 +39,16 @@ function App() {
                 <Route path="/search-results" element={<LayoutWithFooter><SearchResults /></LayoutWithFooter>} />
 
                 <Route path='/account'>
-                    <Route path='user' element={<MyPage/>}></Route>
-                    <Route path='nickname' element={<Nickname/>}></Route>
+                    <Route path='user' element={<LayoutWithPadding><MyPage/></LayoutWithPadding>}></Route>
+                    <Route path='nickname' element={<LayoutWithPadding><Nickname/></LayoutWithPadding>}></Route>
+                    <Route path='tel' element={<LayoutWithPadding><Tel/></LayoutWithPadding>}></Route>
+                    <Route path='password' element={<LayoutWithPadding><Password/></LayoutWithPadding>}></Route>
                 </Route>
                 <Route path='/auth'>
-                    <Route path='sign-up' element={<SignUp/>}></Route>
-                    <Route path='sign-in' element={<SignIn/>}></Route>
-                    <Route path='sign-up-oauth/:userEmail/:userType' element={<SignUpOAuth/>}></Route>
-                    <Route path='oauth-response/:token/:expirationTime' element={<OAuth/>}></Route>
+                    <Route path='sign-up' element={<LayoutWithPadding><SignUp/></LayoutWithPadding>}></Route>
+                    <Route path='sign-in' element={<LayoutWithPadding><SignIn/></LayoutWithPadding>}></Route>
+                    <Route path='sign-up-oauth/:userEmail/:userType' element={<LayoutWithPadding><SignUpOAuth/></LayoutWithPadding>}></Route>
+                    <Route path='oauth-response/:token/:expirationTime' element={<LayoutWithPadding><OAuth/></LayoutWithPadding>}></Route>
                 </Route>
             </Routes>
         </Router>

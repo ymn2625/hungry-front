@@ -11,6 +11,17 @@ const privateApi = axios.create({
     }
 });
 
+privateApi.interceptors.request.use(
+    (config) => {
+        config.withCredentials = true;
+        config.headers.Authorization = `Bearer ${localStorage.getItem('accessToken')}`
+
+        return config;
+    },
+    (error) => {
+        Promise.reject(error);
+    }
+)
 
 privateApi.interceptors.response.use(
     (response) => {
@@ -27,7 +38,7 @@ privateApi.interceptors.response.use(
 
             if(code === ResponseCode.REISSUE_FAIL || code === ResponseCode.NO_PERMISSION) {
                 alert('다시 로그인 해주세요!');
-                localStorage.setItem('accessToken', null);
+                localStorage.removeItem('accessToken');
                 window.location.replace('http://localhost:3000/auth/sign-in');
             }
 
