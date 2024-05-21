@@ -1,6 +1,6 @@
 import {useEffect, useRef} from "react";
-import {getPrivateApi, patchPrivateApi} from "../../../apis/privateApi";
-import {GET_USER, PATCH_PROFILE_IMG_URL} from "../../../apis/user/accountURL";
+import {getPrivateApi, patchPrivateApi, postPrivateApi} from "../../../apis/privateApi";
+import {GET_USER, PATCH_PROFILE_IMG_URL, RESIGNATION_URL, SIGN_OUT_URL} from "../../../apis/user/accountURL";
 import ResponseCode from "../../../enums/response-code";
 import {useUserInfo} from "../../../stores/user_store";
 import {useNavigate} from "react-router-dom";
@@ -20,8 +20,6 @@ function MyPage (props) {
 
     // ref
     const profileImgRef = useRef(null);
-
-    // value
 
     // useEffect
     useEffect(() => {
@@ -55,11 +53,13 @@ function MyPage (props) {
     }
 
     const onSignOutTextClick = () => {
-        navigate('/');
+        const requestBody = { userEmail:userInfo.userEmail };
+        postPrivateApi(SIGN_OUT_URL(), requestBody).then(signOutResponse);
     }
 
     const onResignationClick = () => {
-        navigate('/');
+        const requestBody = { userEmail:userInfo.userEmail };
+        postPrivateApi(RESIGNATION_URL(), requestBody).then(resignationResponse);
     }
 
     // response
@@ -86,6 +86,40 @@ function MyPage (props) {
 
         alert("성공적으로 변경되었습니다.");
         window.location.replace("http://localhost:3000/account/user");
+    }
+
+    const signOutResponse = (responseBody) => {
+        if(!responseBody) return;
+        const { code } = responseBody;
+
+        if(code === ResponseCode.VALIDATION_FAIL) {
+            alert("다시 시도해주세요!");
+            navigate('/account/user');
+        }
+        if(code === ResponseCode.DATABASE_ERROR) alert('데이터베이스 오류입니다.');
+        if(code !== ResponseCode.SUCCESS) return;
+
+        alert("로그아웃 되었습니다.");
+        localStorage.removeItem('accessToken');
+        navigate('/auth/sign-in');
+    }
+
+    const resignationResponse = (responseBody) => {
+        if(!responseBody) return;
+        const { code } = responseBody;
+
+        if(code === ResponseCode.VALIDATION_FAIL) {
+            alert("다시 시도해주세요!");
+            navigate('/account/user');
+        }
+        if(code === ResponseCode.DATABASE_ERROR) alert('데이터베이스 오류입니다.');
+        if(code === ResponseCode.NOT_EXIST_USER) alert('로그인 후 이용해주세요');
+
+        if(code !== ResponseCode.SUCCESS && code !== ResponseCode.NOT_EXIST_USER) return;
+
+        alert("회원탈퇴 되었습니다.");
+        localStorage.removeItem('accessToken');
+        navigate('/auth/sign-in');
     }
 
     return (
