@@ -53,6 +53,10 @@ function SignIn(props) {
         navigate('/auth/sign-up');
     }
 
+    const onFindAccountClick = () => {
+        navigate('/auth/find-account');
+    }
+
     const onSnsSignInButtonClickHandler = (type: 'kakao' | 'naver') => {
         window.location.href = SNS_SIGN_IN_URL(type);
     }
@@ -104,7 +108,7 @@ function SignIn(props) {
                                   onChange={onPasswordChangeHandler} onKeyDown={onPasswordKeyDownHandler}/>
                     </div>
                     <div className='text-link-container'>
-                        <span className='text-link' onClick={onSignUpTextClick}>회원가입</span>&nbsp;|&nbsp;<span className='text-link'>아이디 찾기</span>&nbsp;|&nbsp;<span className='text-link'>비밀번호 찾기</span>
+                        <span className='text-link' onClick={onSignUpTextClick}>회원가입</span>&nbsp;|&nbsp;<span className='text-link' onClick={onFindAccountClick}>계정 정보 찾기</span>
                     </div>
                     <div className='divide-container'>
                         <div className='divide-line'></div>
