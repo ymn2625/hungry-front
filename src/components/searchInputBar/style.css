@@ -1,4 +1,4 @@
-/* SearchResults.css */
+/* SearchInputBar.css */
 
 .search {
     position: absolute;
@@ -29,6 +29,16 @@
 
 }
 
+.clear-button {
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    right: 14px;
+    top: 14px;
+    background: #ccc;
+    border-radius: 10px;
+    cursor: pointer;
+}
 
 .search-results-container {
     position: absolute;

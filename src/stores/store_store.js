@@ -5,6 +5,10 @@ import { postPrivateApi } from "../apis/privateApi";
 const store_store = create((set) => ({
     searchKeyword: '',
     searchResults: [],
+    storeId: null, // storeId 상태 추가
+    storeLatitude: null, // 상점 위도 추가
+    storeLongitude: null, // 상점 경도 추가
+
 
     setSearchKeyword: async (keyword) => {
         // 검색어 상태 업데이트
@@ -38,6 +42,10 @@ const store_store = create((set) => ({
             set({ searchResults: [] });
         }
     },
+
+    setStoreId: (storeId) => set({ storeId }), // storeId 설정 함수
+    // 상점의 위도 및 경도 설정 함수
+    setStoreLatLon: (latitude, longitude) => set({ storeLatitude: latitude, storeLongitude: longitude })
 }));
 
 export default store_store;
