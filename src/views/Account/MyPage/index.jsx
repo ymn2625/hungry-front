@@ -1,6 +1,6 @@
 import {useEffect, useRef} from "react";
-import {getPrivateApi, patchPrivateApi} from "../../../apis/privateApi";
-import {GET_USER, PATCH_PROFILE_IMG_URL} from "../../../apis/user/accountURL";
+import {getPrivateApi, patchPrivateApi, postPrivateApi} from "../../../apis/privateApi";
+import {GET_USER, PATCH_PROFILE_IMG_URL, RESIGNATION_URL, SIGN_OUT_URL} from "../../../apis/user/accountURL";
 import ResponseCode from "../../../enums/response-code";
 import {useUserInfo} from "../../../stores/user_store";
 import {useNavigate} from "react-router-dom";
@@ -20,8 +20,6 @@ function MyPage (props) {
 
     // ref
     const profileImgRef = useRef(null);
-
-    // value
 
     // useEffect
     useEffect(() => {
@@ -55,11 +53,13 @@ function MyPage (props) {
     }
 
     const onSignOutTextClick = () => {
-        navigate('/');
+        const requestBody = { userEmail:userInfo.userEmail };
+        postPrivateApi(SIGN_OUT_URL(), requestBody).then(signOutResponse);
     }
 
     const onResignationClick = () => {
-        navigate('/');
+        const requestBody = { userEmail:userInfo.userEmail };
+        postPrivateApi(RESIGNATION_URL(), requestBody).then(resignationResponse);
     }
 
     // response
@@ -88,29 +88,66 @@ function MyPage (props) {
         window.location.replace("http://localhost:3000/account/user");
     }
 
+    const signOutResponse = (responseBody) => {
+        if(!responseBody) return;
+        const { code } = responseBody;
+
+        if(code === ResponseCode.VALIDATION_FAIL) {
+            alert("다시 시도해주세요!");
+            navigate('/account/user');
+        }
+        if(code === ResponseCode.DATABASE_ERROR) alert('데이터베이스 오류입니다.');
+        if(code !== ResponseCode.SUCCESS) return;
+
+        alert("로그아웃 되었습니다.");
+        localStorage.removeItem('accessToken');
+        navigate('/auth/sign-in');
+    }
+
+    const resignationResponse = (responseBody) => {
+        if(!responseBody) return;
+        const { code } = responseBody;
+
+        if(code === ResponseCode.VALIDATION_FAIL) {
+            alert("다시 시도해주세요!");
+            navigate('/account/user');
+        }
+        if(code === ResponseCode.DATABASE_ERROR) alert('데이터베이스 오류입니다.');
+        if(code === ResponseCode.NOT_EXIST_USER) alert('로그인 후 이용해주세요');
+
+        if(code !== ResponseCode.SUCCESS && code !== ResponseCode.NOT_EXIST_USER) return;
+
+        alert("회원탈퇴 되었습니다.");
+        localStorage.removeItem('accessToken');
+        navigate('/auth/sign-in');
+    }
+
     return (
         <div className='wrapper'>
             <HeaderBox onClick={onPrevClickHandler} title='마이페이지'/>
             <div className='content-wrapper'>
-                <div className='profile-img-box'>
-                    <div className='profile-img' onClick={onProfileImgClickHandler}
-                         style={{backgroundImage: `url(${userInfo.userProfileImg ? userInfo.userProfileImg : defaultProfileImg})`}}>
-                        <input ref={profileImgRef} type='file' accept='image/*' style={{display: 'none'}}
-                               onChange={onProfileImgChangeHandler}/>
-                        <div className='camera' style={{backgroundImage: `url(${camera}`}}></div>
+                <div>
+                    <div className='profile-img-box'>
+                        <div className='profile-img' onClick={onProfileImgClickHandler}
+                             style={{backgroundImage: `url(${userInfo.userProfileImg ? userInfo.userProfileImg : defaultProfileImg})`}}>
+                            <input ref={profileImgRef} type='file' accept='image/*' style={{display: 'none'}}
+                                   onChange={onProfileImgChangeHandler}/>
+                            <div className='camera' style={{backgroundImage: `url(${camera}`}}></div>
+                        </div>
+                    </div>
+                    <div className='user-info-wrapper'>
+                        <InfoBox title='닉네임' value={userInfo.userNickname} url='/account/nickname'/>
+                        <InfoBox title='이메일' value={userInfo.userEmail}/>
+                        <InfoBox title='이름' value={userInfo.userName}/>
+                        <InfoBox title='휴대폰 번호' value={userInfo.userTel} url='/account/tel'/>
+                        {userInfo.userType === 'app' && <InfoBox title='비밀번호' value='********' url='/account/password'/>}
+                        <InfoBox title='연결된 소셜 계정' value={userInfo.userType} isLast={true}/>
                     </div>
                 </div>
-                <div className='user-info-wrapper'>
-                    <InfoBox title='닉네임' value={userInfo.userNickname} url='/account/nickname'/>
-                    <InfoBox title='이메일' value={userInfo.userEmail}/>
-                    <InfoBox title='이름' value={userInfo.userName}/>
-                    <InfoBox title='휴대폰 번호' value={userInfo.userTel} url = '/account/tel' />
-                    <InfoBox title='연결된 소셜 계정' value={userInfo.userType} isLast={true} />
+                <div className='text-link-container'>
+                    <span className='text-link' onClick={onSignOutTextClick}>로그아웃</span>&nbsp;|&nbsp;<span
+                    className='text-link' onClick={onResignationClick}>회원탈퇴</span>
                 </div>
-            </div>
-            <div className='text-link-container'>
-                <span className='text-link' onClick={onSignOutTextClick}>로그아웃</span>&nbsp;|&nbsp;<span
-                className='text-link' onClick={onResignationClick}>회원탈퇴</span>
             </div>
         </div>
     )

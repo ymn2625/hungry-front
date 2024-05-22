@@ -38,7 +38,7 @@ privateApi.interceptors.response.use(
 
             if(code === ResponseCode.REISSUE_FAIL || code === ResponseCode.NO_PERMISSION) {
                 alert('다시 로그인 해주세요!');
-                localStorage.setItem('accessToken', null);
+                localStorage.removeItem('accessToken');
                 window.location.replace('http://localhost:3000/auth/sign-in');
             }
 
