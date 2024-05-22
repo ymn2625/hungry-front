@@ -22,24 +22,6 @@ function SearchBarOnMap() {
     const [mapCenter, setMapCenter] = useState({ latitude: 0, longitude: 0 });
     const [mapZoom, setMapZoom] = useState(15);
 
-    const handleMapMove = () => {
-        const { naver } = window;
-
-        if (mapRef.current && naver) {
-            const map = mapRef.current.$map;
-
-            // Map 객체가 정의되어 있는지 확인
-            if (map) {
-                const center = map.getCenter();
-                const zoom = map.getZoom();
-
-                // 지도 이동 시 center와 zoom 값을 업데이트
-                setMapCenter({ latitude: center._lat, longitude: center._lng });
-                setMapZoom(zoom);
-            }
-        }
-    };
-
 
 
     useEffect(() => {
@@ -62,6 +44,7 @@ function SearchBarOnMap() {
     }, []);
 
     useEffect(() => {
+
         const { naver } = window;
 
 
@@ -81,10 +64,18 @@ function SearchBarOnMap() {
                     zoom: mapZoom, // 지도 확대 정도
 
             });
-
+            console.log("지도다시랜더링!");
             // 지도 이동 이벤트 핸들러 등록
-            naver.maps.Event.addListener(map, 'idle', handleMapMove);
+            const handleMapMove = () => {
+                const center = map.getCenter();
+                const zoom = map.getZoom();
+                setMapCenter({ latitude: center._lat, longitude: center._lng });
+                setMapZoom(zoom);
+                console.log("이동됨");
+            };
 
+            // 이벤트 리스너 등록
+            naver.maps.Event.addListener(map, 'idle', handleMapMove);
 
             // 내 위치를 나타내는 파란색 원 모양의 마커 생성
             const currentMarker = new naver.maps.Marker({
@@ -104,19 +95,14 @@ function SearchBarOnMap() {
                     map,
                 });
             }
+            // clean-up 함수
+            return () => {
+                // 이전에 등록된 이벤트 리스너 제거
+                naver.maps.Event.removeListener(mapRef.map , 'idle', handleMapMove);
+            };
         }
-        // 컴포넌트가 언마운트될 때 이벤트 핸들러 제거
-        return () => {
-            const { naver } = window;
-            if (mapRef.current && naver) {
-                const map = mapRef.current.$map;
 
-                if (naver) {
-                    naver.maps.Event.removeListener(map, 'idle', handleMapMove);
-                }
-            }
-        };
-    }, [currentLocation, storeId]);
+    }, [currentLocation, storeId, mapZoom, mapCenter]);
 
 
     const handleSearch = () => {
