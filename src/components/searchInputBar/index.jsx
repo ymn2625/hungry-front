@@ -45,7 +45,7 @@ function SearchInputBar(props) {
                 readOnly={props.readOnly}
             />
             {searchKeyword !== '' && ( // 검색어가 비어있지 않은 경우에만 x 표시 버튼을 표시
-                <div style={{width:'20px',height:'20px', position:'absolute', right:'14px', top:'14px', background:'#ccc', borderRadius:'10px'}} className="clear-button" onClick={handleClearSearch}><Xmark/></div>
+                <div style={{width:'20px',height:'20px', position:'absolute', right:'14px', top:'14px', background:'#ccc', borderRadius:'10px'}} className="clear-button" onClick={handleClearSearch}> <Xmark/> </div>
             )}
         </div>
     );

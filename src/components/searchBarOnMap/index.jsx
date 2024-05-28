@@ -57,7 +57,7 @@ function SearchBarOnMap() {
             } else {
                 location = mapCenter.latitude !== 0 && mapCenter.longitude !== 0 ?
                     new naver.maps.LatLng(mapCenter.latitude, mapCenter.longitude) :
-                    new naver.maps.LatLng(storeLatitude, storeLongitude);
+                    new naver.maps.LatLng(storeLatitude - 0.005, storeLongitude);
             }
             const map = new naver.maps.Map(mapRef.current, {
                     center: location,
@@ -137,9 +137,11 @@ function SearchBarOnMap() {
                 // storeId가 공백이 아닌 경우에는 SearchInputBar를 띄웁니다.
                 <div onClick={handleInputClick}>
                     <SearchInputBar readOnly={'readOnly'}/>
+                    <div style={{position:'absolute', bottom:'114px', width:'393px', height:'300px', background:'white' }}>
+
+                    </div>
                 </div>
             )}
-            <div>{storeId}</div>
         </>
 
     );
