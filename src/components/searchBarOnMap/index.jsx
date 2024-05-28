@@ -170,7 +170,8 @@ function SearchBarOnMap() {
                         borderTopLeftRadius: '20px',
                         borderTopRightRadius: '20px',
                         boxShadow: '0 2px 4px rgba(0,0,0,0.5)'
-                    }} onClick={handleResultWholePage}>
+                    }}>
+                        <div style={{position:'absolute',width:'393px',height:'172px', zIndex:103}} onClick={handleResultWholePage}></div>
                         <div style={{display:'flex', justifyContent:'center', alignItems:'center', marginTop:'14px', marginBottom:'14px'}}>
                             <div style={{width:'100px', height:'6px', borderRadius:'3px', background:'#ccc'}}></div>
                         </div>
