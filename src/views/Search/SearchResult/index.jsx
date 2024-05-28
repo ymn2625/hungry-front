@@ -9,6 +9,7 @@ import SearchInputBar from "../../../components/searchInputBar"; // 스타일 �
 function SearchResults() {
     const searchResults = useStore((state) => state.searchResults); // 검색 결과 상태 추가
     const setSearchKeyword = useStore((state) => state.setSearchKeyword);
+    const setStoreResult = useStore((state) => state.setStoreResult);
 
     const { setStoreId } = useStore(); // store_store에서 setStoreId 가져오기
     const { setStoreLatLon } = useStore(); // store_store에서 setStoreLatLon 가져오기
@@ -18,6 +19,7 @@ function SearchResults() {
         setStoreId(storeId);
         setStoreLatLon(storeLatitude,storeLongitude);
         setSearchKeyword(storeName);
+        setStoreResult(storeId);
         navigate(`/`); // 디테일 페이지로 이동
     };
 

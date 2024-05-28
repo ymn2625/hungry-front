@@ -12,6 +12,7 @@ import Tel from "./views/Account/Tel";
 import Password from "./views/Account/Password";
 import FindAccount from "./views/Auth/FindAccount";
 import {useEffect} from "react";
+import SearchResultWholePage from "./views/Search/SearchResultWholePage";
 
 function RouteUrl () {
     const navigate = useNavigate()
@@ -47,6 +48,7 @@ function RouteUrl () {
             <Route/>
             <Route path="/" element={<LayoutWithFooter><SearchBarOnMap /></LayoutWithFooter>} />
             <Route path="/search-results" element={<LayoutWithFooter><SearchResults /></LayoutWithFooter>} />
+            <Route path="/search-result-whole-page" element={<SearchResultWholePage />} />
 
             <Route path='/account'>
                 <Route path='user' element={<LayoutWithPadding><MyPage/></LayoutWithPadding>} />
