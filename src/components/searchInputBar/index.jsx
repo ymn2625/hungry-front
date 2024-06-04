@@ -1,6 +1,7 @@
 // SearchInputBar.js
 import React, {useEffect, useRef} from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom'; // useNavigate로 변경
+import {Link} from 'react-router-dom';
 import useStore from "../../stores/store_store";
 import IconBack from "../bootstrapIcon/IconBack_BS";
 import Xmark from "../bootstrapIcon/Xmark"; // 상태 가져오기
@@ -11,6 +12,7 @@ function SearchInputBar(props) {
     const setSearchKeyword = useStore((state) => state.setSearchKeyword);
     const inputRef = useRef(null); // 인풋 요소에 대한 ref
     const { setStoreId } = useStore(); // store_store에서 setStoreId 가져오기
+    const navigate = useNavigate(); // useNavigate로 변경
 
 
     useEffect(() => {
@@ -24,11 +26,13 @@ function SearchInputBar(props) {
 
     const handleClearSearch = () => {
         setSearchKeyword(''); // 검색어를 비웁니다.
+        setStoreId(null);
     };
 
     const handleLinkClick = () => {
         // 링크 클릭 시, storeId를 null로 설정
         setStoreId(null);
+        props.setStartStoreLocationSave(false);
     };
     return (
         <div className="search">
@@ -43,9 +47,10 @@ function SearchInputBar(props) {
                 value={searchKeyword}
                 onChange={handleChange}
                 readOnly={props.readOnly}
+                onClick={props.handleInputClick}
             />
             {searchKeyword !== '' && ( // 검색어가 비어있지 않은 경우에만 x 표시 버튼을 표시
-                <div style={{width:'20px',height:'20px', position:'absolute', right:'14px', top:'14px', background:'#ccc', borderRadius:'10px'}} className="clear-button" onClick={handleClearSearch}><Xmark/></div>
+                <div style={{width:'20px',height:'20px', position:'absolute', right:'14px', top:'14px', background:'#ccc', borderRadius:'10px'}} className="clear-button" onClick={handleClearSearch}> <Xmark/> </div>
             )}
         </div>
     );
