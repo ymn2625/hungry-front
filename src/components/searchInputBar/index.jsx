@@ -2,23 +2,23 @@
 import React, {useEffect, useRef} from 'react';
 import { useNavigate } from 'react-router-dom'; // useNavigate로 변경
 import {Link} from 'react-router-dom';
-import useStore from "../../stores/store_store";
 import IconBack from "../bootstrapIcon/IconBack_BS";
 import Xmark from "../bootstrapIcon/Xmark"; // 상태 가져오기
 import store_store from "../../stores/store_store";
 
 function SearchInputBar(props) {
-    const searchKeyword = useStore((state) => state.searchKeyword);
-    const setSearchKeyword = useStore((state) => state.setSearchKeyword);
+    const searchKeyword = store_store((state) => state.searchKeyword);
+    const setSearchKeyword = store_store((state) => state.setSearchKeyword);
     const inputRef = useRef(null); // 인풋 요소에 대한 ref
-    const { setStoreId } = useStore(); // store_store에서 setStoreId 가져오기
+    const { setStoreId } = store_store(); // store_store에서 setStoreId 가져오기
     const navigate = useNavigate(); // useNavigate로 변경
-
 
     useEffect(() => {
         // 컴포넌트가 마운트된 후에 인풋 요소에 포커스 설정
         inputRef.current.focus();
     }, []);
+
+
 
     const handleChange = (event) => {
         setSearchKeyword(event.target.value);

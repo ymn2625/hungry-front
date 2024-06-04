@@ -128,6 +128,7 @@ function SearchBarOnMap() {
     };
 
     const handleResultWholePage = () => {
+
         // 검색 결과를 누르면 전체 페이지로 이동
         navigate(`/search-result-whole-page`); // useNavigate로 변경
     };

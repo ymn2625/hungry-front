@@ -3,13 +3,20 @@ import {SEARCH_LIST, STORE_RESULT} from "../apis/search/searchURL";
 import { postPrivateApi } from "../apis/privateApi";
 
 const store_store = create((set) => ({
-    searchKeyword: '',
+
     searchResults: [],
-    storeId: null, // storeId 상태 추가
+
     storeResult: '',
+
+    storeId: null,
+    storeName: '',
+    storeAddress: '',
+    storeTel: '',
+    storeDescription: '',
     storeLatitude: null, // 상점 위도 추가
     storeLongitude: null, // 상점 경도 추가
 
+    searchKeyword:'',
 
     setSearchKeyword: async (keyword) => {
         // 검색어 상태 업데이트
