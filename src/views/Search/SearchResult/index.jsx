@@ -11,6 +11,7 @@ function SearchResults() {
     const searchResults = storeStore((state) => state.searchResults); // 검색 결과 상태 추가
     const setSearchKeyword = storeStore((state) => state.setSearchKeyword);
     const setStoreResult = storeStore((state) => state.setStoreResult);
+    const searchKeyword = storeStore((state) => state.searchKeyword);
 
     const { setStoreLatLon } = storeStore();
     const { setStoreId } = storeStore();
@@ -19,12 +20,12 @@ function SearchResults() {
     const setPartyList = partyStore((state) => state.setPartyList);
     const { setPartyStoreId } = partyStore();
     const { partyList } = partyStore();
+    const { setPartyListRemove } = partyStore();
 
     const navigate = useNavigate();
 
 
     useEffect(() => {
-
 
             const fetchPartyLists = async () => {
                 // searchResults를 배열로 변환
@@ -34,14 +35,15 @@ function SearchResults() {
                         await setPartyList(result.storeId);
                     }
                 }));
+
             };
-
+        if(searchResults.length > 0){
             fetchPartyLists();
+        }else{
+            setPartyListRemove();
+        }
 
-
-    }, [searchResults, setPartyList]);
-
-
+    }, [searchResults]);
 
     const handleResultClick = (storeId,storeName,storeLatitude,storeLongitude) => {
         setStoreId(storeId);
@@ -60,19 +62,12 @@ function SearchResults() {
     return (
         <div>
             <SearchInputBar/>
-            {partyList.map(party => (
-                <li key={party.partyId}>
-                    {/* 각 파티의 정보를 표시합니다. */}
-                    <div>Party Name: {party.partyName}</div>
-                    <div>Party Host: {party.partyHost}</div>
-                    <div>Party Limit: {party.partyLimitNum}</div>
-                    <div>Party Description: {party.partyDescription}</div>
-                </li>
-            ))}            {/* 검색 결과 표시 */}
+
+            {/* 검색 결과 표시 */}
             <div className="search-results-container">
-
-                    {searchResults.map((result, index) => (
-
+                {searchResults.map((result, index) => {
+                    const matchingParties = partyList.filter(party => party.partyStoreId === result.storeId);
+                    return (
                        <div key={index} onClick={() => handleResultClick(result.storeId, result.storeName, result.storeLatitude, result.storeLongitude )} style={{height:'108px', paddingLeft:'12px', paddingTop:'12px', position:'relative', borderBottom:'1px solid #777'}}>
                            <div style={{position:'absolute', width:'40px', height:'26px'}}>
                                <Marker w={'22'} h={'22'}/>
@@ -105,12 +100,12 @@ function SearchResults() {
                                     <div style={{position:'absolute', left:0, fontSize:'12px' }}>리뷰 999+</div>
                                     <div style={{position:'absolute', right:'110px', fontSize:'14px'}}>영업시간 9:00 ~ 18:00</div>
                                     <div style={{position:'absolute', left:'250px', background:'#aaa', width:'90px', height:'20px' , borderRadius:'10px', alignItems:'center',display:'flex', justifyContent:'center' , fontSize:'12px', fontWeight:'bold', marginTop:'4px'}}>
-                                        파티수:                                    </div>
+                                        파티수:   {matchingParties.length}                     </div>
                                 </div>
                             </div>
                        </div>
-                    ))}
-
+                    );
+                })}
             </div>
         </div>
     );

@@ -21,7 +21,9 @@ function SearchInputBar(props) {
 
 
     const handleChange = (event) => {
+        console.log("handleChange");
         setSearchKeyword(event.target.value);
+
     };
 
     const handleClearSearch = () => {

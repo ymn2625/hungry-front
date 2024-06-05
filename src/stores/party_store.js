@@ -1,21 +1,19 @@
 import { create } from 'zustand';
-import {PARTY_INFO, PARTY_LIST, PARTY_RESULT} from "../apis/party/partyURL";
+import {PARTY_INFO, PARTY_LIST} from "../apis/party/partyURL";
 import { postPrivateApi } from "../apis/privateApi";
 
-const party_store = create((set) => ({
+const party_store = create((set, get) => ({
     storeId: null, // storeId 상태 추가
-
     partyList: [],
-    partyId: null, // partyId 상태 추가
+    partyStoreId: null, // partyId 상태 추가
     partyName: '',
     partyHost: '',
     partyLimitNum: null,
     partyDescription: '',
-
     partyInfo: '',
 
     setPartyList: async (storeId) => {
-
+        set({ partyList: [] });
         if(storeId){
         try {
 
@@ -26,15 +24,29 @@ const party_store = create((set) => ({
             if (response && Array.isArray(response) && response.length > 0) {
                 // 응답 데이터가 유효하면 searchResults에 저장
                 const updatedPartyList = response.map(party => ({
-                    storeId: party.storeId,
+                    partyStoreId: party.partyStoreId,
+                    partyId: party.partyId,
                     partyName: party.partyName,
                     partyHost: party.partyHost,
                     partyLimitNum: party.partyLimitNum,
                     partyDescription: party.partyDescription
                 }));
+
+
+                // 기존 partyList 가져오기
+                const existingPartyList = get().partyList;
+
+                // 중복된 항목 필터링
+                const filteredPartyList = updatedPartyList.filter(
+                    newParty => !existingPartyList.some(
+                        existingParty => existingParty.partyId === newParty.partyId
+                    )
+                );
+
                 set((state) => ({
-                    partyList: [...state.partyList, ...updatedPartyList]
-                }));            } else {
+                    partyList: [...state.partyList, ...filteredPartyList]
+                }));
+                } else {
                 console.log('No data received or data is not an array');
                 // 응답 데이터가 유효하지 않으면 빈 배열 설정
                 set({ partyList: [] });
