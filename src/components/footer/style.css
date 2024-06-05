@@ -8,8 +8,10 @@
     align-items: center;
     height: 80px;
     width: 393px;
-    background-color: #333;
+    background-color: white;
     padding: 0;
+    box-shadow: 0 -2px 2px 2px rgba(100,100,100,0.2);
+    z-index: 110;
 }
 
 .footer-section {
@@ -18,11 +20,11 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    background: blue;
+    background: white;
 }
 
 .title {
-    color: white;
+    color: black;
     margin-top: 2px;
     overflow: scroll;
 }
@@ -30,7 +32,10 @@
 .logo-box {
     width: 48px; /* 로고 상자 너비 조정 */
     height: 48px; /* 로고 상자 높이 조정 */
-    background-color: black; /* 검정색 로고 상자 배경 */
+    background-color: white; /* 검정색 로고 상자 배경 */
     margin-bottom: 0px; /* 로고 상자와 메뉴 이름 사이의 간격 조정 */
     margin-top: 4px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
