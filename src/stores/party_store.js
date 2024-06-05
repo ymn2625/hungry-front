@@ -12,6 +12,22 @@ const party_store = create((set, get) => ({
     partyDescription: '',
     partyInfo: '',
 
+    customPartyList: [],
+    customPartyDetail: '',
+
+
+
+    setCustomPartyDetail: (customPartyDetail) => {
+        console.log("디테일 안들어왔어?" + customPartyDetail);
+        set({customPartyDetail: customPartyDetail});
+
+    },
+
+    setCustomPartyList: (customParty) => {
+        set({customPartyList: customParty});
+        console.log("들어왔는가" + customParty.length);
+    },
+
     setPartyList: async (storeId) => {
         set({ partyList: [] });
         if(storeId){

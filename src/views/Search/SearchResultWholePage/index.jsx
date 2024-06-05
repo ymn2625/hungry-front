@@ -8,26 +8,36 @@ import Marker from "../../../components/bootstrapIcon/Marker";
 import Clock from "../../../components/bootstrapIcon/Clock";
 import './style.css'
 import PlusCircle from "../../../components/bootstrapIcon/PlusCircle";
-import useStore from "../../../stores/party_store";
+import party_store from "../../../stores/party_store";
+import storeStore from "../../../stores/store_store";
 
 
 function SearchResultWholePage() {
     const navigate = useNavigate(); // useNavigate로 변경
 
     // store_store에서 storeId를 가져오기
-    const { partyList } = useStore();
+    const { partyList } = party_store();
+    const { customPartyList } = party_store();
+    const setCustomPartyDetail = party_store((state) => state.setCustomPartyDetail);
 
 
     const handleTurnBack = () =>{
         navigate(-1); // -1은 이전 페이지로 이동하는 명령입니다.
     }
-    const [partyDetail, setPartyDetail] = useState(false);
+    const [partyDetailToggle, setPartyDetailToggle] = useState(false);
     // 주소 세부 사항을 토글하는 함수
     const togglePartyDetail = () => {
-        setPartyDetail(prevState => !prevState);
+        setPartyDetailToggle(prevState => !prevState);
     };
 
-
+    const partyDetailMove = (event) => {
+        // 검색 버튼을 클릭하면 검색 결과 페이지로 이동
+        const clickedPartyId = event.currentTarget.key;
+        console.log(clickedPartyId);
+        const ClickedPartyDetail = customPartyList.filter(party => party.partyId === clickedPartyId)
+        setCustomPartyDetail(ClickedPartyDetail);
+        navigate(`/party/party-detail`); // useNavigate로 변경
+    };
 
     return(
         <div style={{width:'393px', height:'852px', overflow:'auto'}}>
@@ -67,16 +77,16 @@ function SearchResultWholePage() {
                         배고팟 보기 ▽
                     </div>
                     <div style={{position:'absolute', right:'20px', top:'12px', fontSize:'12px', fontWeight:'bold'}}>
-                        파티 수 : 10
+                        파티 수 : {customPartyList.length}
                     </div>
                 </div>
-                {partyDetail ? <div style={{background:'#dff', padding: '12px 0'}}>
+                {partyDetailToggle ? <div style={{background:'#dff', padding: '12px 0'}}>
                                 이곳은 파티를 출력하는 곳입니다.
-                                <ul>
-                                    <li>파티1</li>
-                                    <li>파티2</li>
-                                    <li>파티3</li>
-                                </ul>
+                                    <ul>
+                                        {customPartyList.map(party => (
+                                            <li key={party.partyId} onClick={partyDetailMove}>{party.partyName}</li>
+                                        ))}
+                                    </ul>
                                 <div style={{background:'yellow'}}>파티만들기 <PlusCircle w={'16px'} h={'16px'}/> 이름,인원수,파티설명,가게</div>
                                 </div> 
                                 

@@ -1,10 +1,12 @@
 import React, {useEffect, useRef, useState} from 'react';
 import { useNavigate } from 'react-router-dom'; // useNavigate로 변경
 import './style.css';
-import IconSearch from "../bootstrapIcon/IconSearch_BS"; // 스타일 파일을 불러옵니다.
-import useStore from "../../stores/store_store";
-import SearchInputBar from "../searchInputBar";
-import StarFull from "../bootstrapIcon/StarFull"; // 경로는 실제로 사용하는 위치에 맞게 수정하세요.
+import IconSearch from "../../../components/bootstrapIcon/IconSearch_BS"; // 스타일 파일을 불러옵니다.
+import useStore from "../../../stores/store_store";
+import SearchInputBar from "../../../components/searchInputBar";
+import StarFull from "../../../components/bootstrapIcon/StarFull";
+import party_store from "../../../stores/party_store";
+import partyStore from "../../../stores/party_store"; // 경로는 실제로 사용하는 위치에 맞게 수정하세요.
 
 function SearchBarOnMap() {
 
@@ -30,6 +32,9 @@ function SearchBarOnMap() {
     const toggleAddressDetail = () => {
         setAddressDetail(prevState => !prevState);
     };
+
+    const { partyList } = party_store();
+    const setCustomPartyList = partyStore((state) => state.setCustomPartyList);
 
 
     useEffect(() => {
@@ -128,7 +133,7 @@ function SearchBarOnMap() {
     };
 
     const handleResultWholePage = () => {
-
+        setCustomPartyList(partyList.filter(party => party.partyStoreId === storeId));
         // 검색 결과를 누르면 전체 페이지로 이동
         navigate(`/search-result-whole-page`); // useNavigate로 변경
     };
@@ -280,7 +285,7 @@ function SearchBarOnMap() {
                                     fontWeight: 'bold',
                                     marginTop: '4px'
                                 }}>
-                                    파티 수 : 0
+                                    파티 수 : {partyList.filter(party => party.partyStoreId === storeId).length}
                                 </div>
                             </div>
                             <div style={{position:'absolute', right:0, top:0 , width:'72px', height:'72px', background:'black', borderRadius:'12px'}}>

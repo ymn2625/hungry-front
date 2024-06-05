@@ -20,21 +20,16 @@ const store_store = create((set) => ({
 
     setSearchKeyword: async (keyword) => {
         // 검색어 상태 업데이트
-        console.log("서치키워드업데이트전")
         set({ searchKeyword: keyword });
-        console.log("서치키워드업데이트후")
         try {
-            console.log("서치키워드왜이래");
             // 서버에 검색 요청
             set({ searchResults: [] });
             const response = await postPrivateApi(SEARCH_LIST(), { keyword });
-            console.log("서치키워드왜이래2");
             if (response && Array.isArray(response)) {
-                console.log("서치키워드왜이래3");
                 set({ searchResults: keyword !== '' ? response : [] });
 
                 if (response.length > 0) {
-                    console.log(response[0].storeName + " 여기지?");
+                    console.log(response[0].storeName);
                 } else {
                     console.log('Received empty array');
 
