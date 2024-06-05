@@ -5,7 +5,7 @@ import Nickname from "./views/Account/Nickname";
 import SignIn from "./views/Auth/SignIn";
 import {OAuth, SignUpOAuth} from "./views/Auth/OAuth";
 import Footer from "./components/footer";
-import SearchBarOnMap from "./components/searchBarOnMap";
+import SearchBarOnMap from "./views/Search/searchBarOnMap";
 import SearchResults from "./views/Search/SearchResult/index";
 import MyPage from "./views/Account/MyPage";
 import Tel from "./views/Account/Tel";
@@ -13,6 +13,8 @@ import Password from "./views/Account/Password";
 import FindAccount from "./views/Auth/FindAccount";
 import {useEffect} from "react";
 import Rooms from "./views/Chat/Rooms";
+import SearchResultWholePage from "./views/Search/SearchResultWholePage";
+import PartyDetail from "./views/Party/PartyDetail";
 
 function RouteUrl () {
     const navigate = useNavigate();
@@ -50,7 +52,13 @@ function RouteUrl () {
             <Route/>
             <Route path="/" element={<LayoutWithFooter><SearchBarOnMap /></LayoutWithFooter>} />
             <Route path="/search-results" element={<LayoutWithFooter><SearchResults /></LayoutWithFooter>} />
+            <Route path="/search-result-whole-page" element={<SearchResultWholePage />} />
 
+
+
+            <Route path='/party'>
+                <Route path='party-detail' element={<LayoutWithFooter><PartyDetail/></LayoutWithFooter>}/>
+            </Route>
             <Route path='/account'>
                 <Route path='user' element={<LayoutWithPadding><MyPage/></LayoutWithPadding>} />
                 <Route path='nickname' element={<LayoutWithPadding><Nickname/></LayoutWithPadding>} />
