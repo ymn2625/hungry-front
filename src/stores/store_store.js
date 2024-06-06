@@ -17,10 +17,12 @@ const store_store = create((set) => ({
     storeLongitude: null, // 상점 경도 추가
 
     searchKeyword:'',
+    inputValue:'',
 
     setSearchKeyword: async (keyword) => {
         // 검색어 상태 업데이트
         set({ searchKeyword: keyword });
+        console.log("서치키워드 넣었다");
         try {
             // 서버에 검색 요청
             set({ searchResults: [] });
@@ -29,10 +31,9 @@ const store_store = create((set) => ({
                 set({ searchResults: keyword !== '' ? response : [] });
 
                 if (response.length > 0) {
-                    console.log(response[0].storeName);
+                    console.log('검색결과가 있습니다. 총 개수:' + response.length);
                 } else {
-                    console.log('Received empty array');
-
+                    console.log('검색결과가 없습니다');
                 }
             } else {
                 console.log('No data received or data is not an array');
@@ -62,8 +63,9 @@ const store_store = create((set) => ({
 
     },
 
-
+    setInputValue: (inputValue) => set ({ inputValue }),
     setStoreId: (storeId) => set({ storeId }), // storeId 설정 함수
+    setStoreResultRemove: (result) => set({result}),
     // 상점의 위도 및 경도 설정 함수
     setStoreLatLon: (latitude, longitude) => set({ storeLatitude: latitude, storeLongitude: longitude })
 }));

@@ -7,11 +7,19 @@ import BpLogo from "../bootstrapIcon/BpLogo";
 import People from "../bootstrapIcon/People";
 import My from "../bootstrapIcon/My";
 import {useNavigate} from "react-router-dom";
+import store_store from "../../stores/store_store";
+
 
 const Footer = () => {
     const navigate = useNavigate(); // useNavigate로 변경
 
+    const {setStoreResultRemove} = store_store();
+    const {setStoreId} = store_store();
+
+
     const moveToMap = () => {
+        //setStoreResultRemove('');
+        //setStoreId(null);
         navigate('/');
     }
 

@@ -33,7 +33,6 @@ function SearchResultWholePage() {
     const partyDetailMove = (event) => {
         // 검색 버튼을 클릭하면 검색 결과 페이지로 이동
         const clickedPartyId = event.currentTarget.key;
-        console.log(clickedPartyId);
         const ClickedPartyDetail = customPartyList.filter(party => party.partyId === clickedPartyId)
         setCustomPartyDetail(ClickedPartyDetail);
         navigate(`/party/party-detail`); // useNavigate로 변경

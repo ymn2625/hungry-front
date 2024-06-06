@@ -70,21 +70,19 @@ function SearchBarOnMap() {
             } else {
                 location = mapCenter.latitude !== 0 && mapCenter.longitude !== 0 ?
                     new naver.maps.LatLng(mapCenter.latitude, mapCenter.longitude) :
-                    new naver.maps.LatLng(storeLatitude - 0.005, storeLongitude);
+                    new naver.maps.LatLng(storeLatitude - 0.002, storeLongitude);
             }
             const map = new naver.maps.Map(mapRef.current, {
                     center: location,
                     zoom: mapZoom, // 지도 확대 정도
 
             });
-            console.log("지도다시랜더링!");
             // 지도 이동 이벤트 핸들러 등록
             const handleMapMove = () => {
                 const center = map.getCenter();
                 const zoom = map.getZoom();
                 setMapCenter({ latitude: center._lat, longitude: center._lng });
                 setMapZoom(zoom);
-                console.log("이동됨");
             };
 
             // 이벤트 리스너 등록
