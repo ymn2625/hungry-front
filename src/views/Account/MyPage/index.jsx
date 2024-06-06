@@ -101,6 +101,7 @@ function MyPage (props) {
 
         alert("로그아웃 되었습니다.");
         localStorage.removeItem('accessToken');
+        sessionStorage.removeItem('isSignIn');
         navigate('/auth/sign-in');
     }
 

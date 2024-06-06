@@ -1,5 +1,5 @@
 import './App.css';
-import {BrowserRouter as Router, Route, Routes, useNavigate} from "react-router-dom";
+import {BrowserRouter as Router, Route, Routes, useLocation, useNavigate} from "react-router-dom";
 import SignUp from "./views/Auth/SignUp";
 import Nickname from "./views/Account/Nickname";
 import SignIn from "./views/Auth/SignIn";
@@ -12,20 +12,24 @@ import Tel from "./views/Account/Tel";
 import Password from "./views/Account/Password";
 import FindAccount from "./views/Auth/FindAccount";
 import {useEffect} from "react";
+import Rooms from "./views/Message/Rooms";
 import SearchResultWholePage from "./views/Search/SearchResultWholePage";
 import PartyDetail from "./views/Party/PartyDetail";
+import Message from "./views/Message/Chat";
 
 function RouteUrl () {
-    const navigate = useNavigate()
+    const navigate = useNavigate();
+    const location = useLocation();
 
     // 애플리케이션이 처음 로드될 때 로그인 창으로
     useEffect(() => {
-        const isFirstLoad = sessionStorage.getItem('isFirstLoad');
-        if (!isFirstLoad) {
-            sessionStorage.setItem('isFirstLoad', 'true');
+        const isSignIn = sessionStorage.getItem('isSignIn');
+
+        // 현재 경로가 authPaths에 포함되어 있지 않으면 리디렉션
+        if (!isSignIn && !location.pathname.startsWith('/auth')) {
             navigate('/auth/sign-in');
         }
-    }, [navigate]);
+    }, [navigate, location.pathname]);
 
     // Footer가 포함된 레이아웃 컴포넌트
     const LayoutWithFooter = ({ children }) => (
@@ -69,7 +73,8 @@ function RouteUrl () {
                 <Route path='oauth-response/:token/:expirationTime' element={<LayoutWithPadding><OAuth/></LayoutWithPadding>} />
                 <Route path='find-account' element={<LayoutWithPadding><FindAccount/></LayoutWithPadding>} />
             </Route>
-
+            <Route path='/store/:storeId/room' element={<LayoutWithFooter><Rooms/></LayoutWithFooter>}></Route>
+            <Route path='/party/message' element={<Message/>}/>
         </Routes>
     )
 }

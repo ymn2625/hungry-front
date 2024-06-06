@@ -13,6 +13,7 @@ function OAuth() {
         if(!token || !expirationTime) return;
 
         window.localStorage.setItem('accessToken', token); // 엑세스 토큰 저장
+        sessionStorage.setItem('isSignIn', 'true');
         navigate('/');  // 메인 화면 이동
 
     }, [token]);
