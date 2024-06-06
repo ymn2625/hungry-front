@@ -77,6 +77,9 @@ function SignIn(props) {
         setTimeout(() => {
             window.localStorage.removeItem('accessToken');
         }, expirationTime);
+
+        sessionStorage.setItem('isSignIn', 'true');
+
         navigate('/');
     }
 
