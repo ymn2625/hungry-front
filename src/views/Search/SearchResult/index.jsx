@@ -15,6 +15,7 @@ function SearchResults() {
 
     const { setStoreLatLon } = storeStore();
     const { setStoreId } = storeStore();
+    const { setInputValue } = storeStore();
 
     /*불러온 파티리스트*/
     const setPartyList = partyStore((state) => state.setPartyList);
@@ -49,6 +50,7 @@ function SearchResults() {
         setStoreId(storeId);
         setStoreLatLon(storeLatitude,storeLongitude);
         setSearchKeyword(storeName);
+        setInputValue(storeName);
         setStoreResult(storeId);
 
         /*해당 가게 파티 리스트 입력*/

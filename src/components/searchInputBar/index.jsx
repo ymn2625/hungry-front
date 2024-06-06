@@ -1,5 +1,5 @@
 // SearchInputBar.js
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import { useNavigate } from 'react-router-dom'; // useNavigate로 변경
 import {Link} from 'react-router-dom';
 import IconBack from "../bootstrapIcon/IconBack_BS";
@@ -12,16 +12,24 @@ function SearchInputBar(props) {
     const inputRef = useRef(null); // 인풋 요소에 대한 ref
     const { setStoreId } = store_store(); // store_store에서 setStoreId 가져오기
     const navigate = useNavigate(); // useNavigate로 변경
+    const { inputValue} = store_store();
+
+    const { setInputValue } = store_store();
 
     useEffect(() => {
         // 컴포넌트가 마운트된 후에 인풋 요소에 포커스 설정
         inputRef.current.focus();
     }, []);
 
+    const handleChange = (event) =>{
+        console.log('Change');
+        setInputValue(event.target.value);
+    }
+    const handleKeyUp = (event) => {
+        // onChange를 쓰면 한글글자에 따라 (구록 -> 구로구 갈때 구로,구로구 두번 호출 이런식으로) 두번호출 오류가있음
+        console.log("키눌렀다");
+        console.log(event.target.value);
 
-
-    const handleChange = (event) => {
-        console.log("handleChange");
         setSearchKeyword(event.target.value);
 
     };
@@ -46,8 +54,9 @@ function SearchInputBar(props) {
                 className="input-search"
                 type="text"
                 placeholder="장소, 음식점 검색"
-                value={searchKeyword}
+                value={inputValue}
                 onChange={handleChange}
+                onKeyUp={handleKeyUp}
                 readOnly={props.readOnly}
                 onClick={props.handleInputClick}
             />
