@@ -1,15 +1,24 @@
 import { create } from 'zustand';
 import {PARTY_INFO, PARTY_LIST} from "../apis/party/partyURL";
-import { postPrivateApi } from "../apis/privateApi";
+import {getPrivateApi, postPrivateApi} from "../apis/privateApi";
 
 const party_store = create((set, get) => ({
-    storeId: null, // storeId 상태 추가
     partyList: [],
-    partyStoreId: null, // partyId 상태 추가
+
+    storeId: null, // storeId 상태 추가
+
+    partyId: null,
+    partyCount: null,
+    partyLimit: null,
     partyName: '',
-    partyHost: '',
-    partyLimitNum: null,
     partyDescription: '',
+    partyTime:'',
+    partyStartTime:'',
+    partyEndTime:'',
+
+
+
+
     partyInfo: '',
 
     customPartyList: [],
@@ -32,20 +41,39 @@ const party_store = create((set, get) => ({
         set({ partyList: [] });
         if(storeId){
         try {
+            const partyListUrl = PARTY_LIST().replace('{storeId}', storeId);
 
             // 서버에 검색 요청
-            const response = await postPrivateApi(PARTY_LIST(), { storeId });
+
+            const response = await getPrivateApi(partyListUrl)
+            // 서버로부터 받은 응답 데이터를 JSON 형식으로 파싱
+            console.log(response.partyListFromServer[0].partyName + "response는 json 속에있는 배열을 넣어야함");
+
+            const updateResponse = response.partyListFromServer;
 
             // 응답 데이터 유효성 검사
-            if (response && Array.isArray(response) && response.length > 0) {
+            if (updateResponse && Array.isArray(updateResponse) && updateResponse.length > 0) {
                 // 응답 데이터가 유효하면 searchResults에 저장
-                const updatedPartyList = response.map(party => ({
-                    partyStoreId: party.partyStoreId,
+
+
+                const updatedPartyList = updateResponse.map(party => ({
+                /*    partyStoreId: party.partyStoreId,
                     partyId: party.partyId,
                     partyName: party.partyName,
                     partyHost: party.partyHost,
                     partyLimitNum: party.partyLimitNum,
-                    partyDescription: party.partyDescription
+                    partyDescription: party.partyDescription  */
+
+                    partyStoreId: party.storeId,
+
+                    partyId: party.partyId,
+                    partyCount: party.partyCount,
+                    partyLimit: party.partyLimit,
+                    partyName: party.partyName,
+                    partyDescription: party.partyDescription,
+                    partyTime:party.partyTime,
+                    partyStartTime:party.partyStartTime,
+                    partyEndTime:party.partyEndTime,
                 }));
 
 
