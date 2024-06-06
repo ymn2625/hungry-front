@@ -12,9 +12,10 @@ import Tel from "./views/Account/Tel";
 import Password from "./views/Account/Password";
 import FindAccount from "./views/Auth/FindAccount";
 import {useEffect} from "react";
-import Rooms from "./views/Chat/Rooms";
+import Rooms from "./views/Message/Rooms";
 import SearchResultWholePage from "./views/Search/SearchResultWholePage";
 import PartyDetail from "./views/Party/PartyDetail";
+import Message from "./views/Message/Chat";
 
 function RouteUrl () {
     const navigate = useNavigate();
@@ -73,9 +74,7 @@ function RouteUrl () {
                 <Route path='find-account' element={<LayoutWithPadding><FindAccount/></LayoutWithPadding>} />
             </Route>
             <Route path='/store/:storeId/room' element={<LayoutWithFooter><Rooms/></LayoutWithFooter>}></Route>
-            <Route path='/party'>
-
-            </Route>
+            <Route path='/party/message' element={<Message/>}/>
         </Routes>
     )
 }
