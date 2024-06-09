@@ -55,7 +55,6 @@ function SearchResults() {
 
         /*해당 가게 파티 리스트 입력*/
         setPartyStoreId(storeId); /*파티스토어에 스토어아이디 저장*/
-
         navigate(`/`); // 디테일 페이지로 이동
     };
 
