@@ -25,7 +25,7 @@ const PartyRoomBox = (props) => {
             <div className='party-content-box'>
                 <div className='party-title-box'>
                     <div className='meal-time'>{substringTime(props.partyTime)}</div>
-                    <div className='party-title'>{props.partyTitle}</div>
+                    <div className='party-title'>{props.partyName}</div>
                 </div>
                 <div className='time-box'>
                     <div className='start-time'>{formatDateTime(props.partyStartTime)}</div>
