@@ -5,9 +5,12 @@ import partyStore from "../../../stores/party_store";
 import './style.css';
 import Marker from "../../../components/bootstrapIcon/Marker";
 import StarFull from "../../../components/bootstrapIcon/StarFull";
-import SearchInputBar from "../../../components/searchInputBar"; // 스타일 파일을 import
+import SearchInputBar from "../../../components/searchInputBar";
+import page_store from "../../../stores/page_store"; // 스타일 파일을 import
 
 function SearchResults() {
+    const { setPageNow } = page_store();
+
     const searchResults = storeStore((state) => state.searchResults); // 검색 결과 상태 추가
     const setSearchKeyword = storeStore((state) => state.setSearchKeyword);
     const setStoreResult = storeStore((state) => state.setStoreResult);
@@ -25,6 +28,9 @@ function SearchResults() {
 
     const navigate = useNavigate();
 
+    useEffect(()=>{
+        setPageNow('/search-results')
+    },[])
 
     useEffect(() => {
 

@@ -6,9 +6,11 @@ import useStore from "../../../stores/store_store";
 import SearchInputBar from "../../../components/searchInputBar";
 import StarFull from "../../../components/bootstrapIcon/StarFull";
 import party_store from "../../../stores/party_store";
-import partyStore from "../../../stores/party_store"; // 경로는 실제로 사용하는 위치에 맞게 수정하세요.
+import partyStore from "../../../stores/party_store";
+import page_store from "../../../stores/page_store"; // 경로는 실제로 사용하는 위치에 맞게 수정하세요.
 
 function SearchBarOnMap() {
+    const {setPageNow} = page_store();
 
     // store_store에서 storeId를 가져오기
     const { storeId, storeLatitude, storeLongitude, storeResult } = useStore();
@@ -36,6 +38,9 @@ function SearchBarOnMap() {
     const { partyList } = party_store();
     const setCustomPartyList = partyStore((state) => state.setCustomPartyList);
 
+    useEffect(()=>{
+     setPageNow('/')
+    },[]);
 
     useEffect(() => {
         // 브라우저의 Geolocation API를 사용하여 현재 위치 가져오기
