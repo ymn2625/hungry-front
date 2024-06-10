@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import IconBack from "../../../components/bootstrapIcon/IconBack_BS";
 import {useNavigate} from "react-router-dom";
 import Phone from "../../../components/bootstrapIcon/Phone";
@@ -10,6 +10,7 @@ import './style.css'
 import PlusCircle from "../../../components/bootstrapIcon/PlusCircle";
 import party_store from "../../../stores/party_store";
 import storeStore from "../../../stores/store_store";
+import PartyRoomBox from "../../../components/partyRoomBox";
 
 
 function SearchResultWholePage() {
@@ -19,7 +20,7 @@ function SearchResultWholePage() {
     const { partyList } = party_store();
     const { customPartyList } = party_store();
     const setCustomPartyDetail = party_store((state) => state.setCustomPartyDetail);
-
+    const { customPartyDetail} = party_store();
 
     const handleTurnBack = () =>{
         navigate(-1); // -1은 이전 페이지로 이동하는 명령입니다.
@@ -30,13 +31,25 @@ function SearchResultWholePage() {
         setPartyDetailToggle(prevState => !prevState);
     };
 
-    const partyDetailMove = (event) => {
+    const partyDetailMove = (clickedPartyId) => {
         // 검색 버튼을 클릭하면 검색 결과 페이지로 이동
-        const clickedPartyId = event.currentTarget.key;
+        console.log(clickedPartyId + "몇?");
+
         const ClickedPartyDetail = customPartyList.filter(party => party.partyId === clickedPartyId)
-        setCustomPartyDetail(ClickedPartyDetail);
-        navigate(`/party/party-detail`); // useNavigate로 변경
+        console.log(customPartyList[0].partyName + "어떻게들어갔니");
+        console.log(ClickedPartyDetail[0].partyName+"시팔저팔");
+        if(customPartyDetail ===''){
+            setCustomPartyDetail(ClickedPartyDetail);
+        }else{
+            setCustomPartyDetail('');
+        }
+
+        //navigate(`/party/party-detail`); // useNavigate로 변경
     };
+
+    useEffect(()=>{
+        setCustomPartyDetail('');
+    },[]);
 
     return(
         <div style={{width:'393px', height:'852px', overflow:'auto'}}>
@@ -79,18 +92,53 @@ function SearchResultWholePage() {
                         파티 수 : {customPartyList.length}
                     </div>
                 </div>
-                {partyDetailToggle ? <div style={{background:'#dff', padding: '12px 0'}}>
-                                이곳은 파티를 출력하는 곳입니다.
-                                    <ul>
-                                        {customPartyList.map(party => (
-                                            <li key={party.partyId} onClick={partyDetailMove}>{party.partyName}</li>
-                                        ))}
-                                    </ul>
-                                <div style={{background:'yellow'}}>파티만들기 <PlusCircle w={'16px'} h={'16px'}/> 이름,인원수,파티설명,가게</div>
-                                </div> 
+                {partyDetailToggle ? <div style={{ padding: '12px 0' }}>
+                                    <div>
+                                        {customPartyList.map(party => {
+                                            const p1 = {
+                                            partyProfileImg: null,
+                                            partyTime: party.partyTime,
+                                            partyName: party.partyName,
+                                            partyStartTime: party.partyStartTime,
+                                            partyEndTime: party.partyEndTime,
+                                            partyCount: party.partyCount,
+                                            partyLimit: party.partyLimit,
+                                            onClickHandler: null
+                                        };
+                                            return <div key={party.partyId} onClick={()=>partyDetailMove(party.partyId)}><PartyRoomBox {...p1}/>
+                                            {customPartyDetail !== '' && customPartyDetail[0].partyId === party.partyId && (
+                                                <div style={{ width: '393px', padding: '20px 0px', background: "skyblue" }}>
+                                                    소개: {customPartyDetail[0].partyDescription}<br/>
+                                                    <br/>
+                                                    방장:  <br/>/파티원 List<br/>/소개글
+                                                </div>
+                                            )}
+                                            </div>
+                                        })}
+                                    </div>
+
+                        {/*파티정보 상태창*/}
+
+                 {/*       {customPartyDetail !== '' ?
+                            <div style={{width: '393px',padding:'20px 0px', background: "skyblue"}}>
+                                소개: {customPartyDetail[0].partyDescription}<br/>
+                                <br/>
+                                방장:  <br/>/파티원 List<br/>/소개글
+
+                            </div> : ''}*/}
+
+                        <div style={{marginTop:'18px', display:'flex',justifyContent:'center',alignItems:'center'}}>
+                                        <div style={{background:'#3af', width:'200px', height:'40px', borderRadius:'20px', display:'flex',justifyContent:'center',alignItems:'center', fontSize:'18px', color:'white' }}>
+                                            파티만들기 <PlusCircle w={'18px'} h={'18px'}/></div>
+                                    </div>
+                                </div>
                                 
                     : ''}
                 {/*전화, 저장, 공유*/}
+
+
+
+
                 &nbsp;
                 <hr/>
                 <div style={{position:'relative', width:'393px', height:'80px', display:'flex', justifyContent:'center', alignItems:'center', borderBottom:'8px solid #ccc' }}>
