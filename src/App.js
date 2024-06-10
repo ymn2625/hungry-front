@@ -12,10 +12,11 @@ import Tel from "./views/Account/Tel";
 import Password from "./views/Account/Password";
 import FindAccount from "./views/Auth/FindAccount";
 import {useEffect} from "react";
-import Rooms from "./views/Message/Rooms";
+import Rooms from "./views/Message/StoreParty";
 import SearchResultWholePage from "./views/Search/SearchResultWholePage";
 import PartyDetail from "./views/Party/PartyDetail";
-import Message from "./views/Message/Chat";
+import Message from "./views/Message/PartyRoom";
+import MyParty from "./views/Message/MyParty";
 
 function RouteUrl () {
     const navigate = useNavigate();
@@ -75,6 +76,7 @@ function RouteUrl () {
             </Route>
             <Route path='/store/:storeId/room' element={<LayoutWithFooter><Rooms/></LayoutWithFooter>}></Route>
             <Route path='/party/message' element={<Message/>}/>
+            <Route path='/my-party' element={<MyParty/>}/>
         </Routes>
     )
 }

@@ -1,4 +1,4 @@
-import PartyRoomBox from "../../../components/partyRoomBox";
+import PartyRoomBox from "../../../components/partyBox";
 
 function Rooms(props) {
     const p1 = {

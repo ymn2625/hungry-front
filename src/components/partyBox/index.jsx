@@ -4,8 +4,13 @@ import defaultProfileImg from "../../assets/images/default-profile-image.jpeg";
 const PartyRoomBox = (props) => {
     const formatDateTime = (dateTime) => {
         const dateObj = new Date(dateTime);
-        return `${dateObj.getMonth() + 1}/${dateObj.getDate()} ${dateObj.getHours()}:${dateObj.getMinutes()}`;
+        const month = dateObj.getMonth() + 1;
+        const day = dateObj.getDate();
+        const hours = dateObj.getHours();
+        const minutes = dateObj.getMinutes().toString().padStart(2, '0');
+        return `${month}/${day} ${hours}:${minutes}`;
     };
+
 
     const substringTime = (partyTime) => {
         const substringT = partyTime.charAt(0);
@@ -28,7 +33,7 @@ const PartyRoomBox = (props) => {
                     <div className='end-time'>{formatDateTime(props.partyEndTime)}</div>
                 </div>
                 <div className='count-box'>
-                    <div className='status-box'>{props.partyCount == props.partyLimit ? '모집완료' : '모집중'}&nbsp;</div>
+                    <div className='status-box'>{props.partyCount === props.partyLimit ? '모집완료' : '모집중'}&nbsp;</div>
                     <div className='count'>{props.partyCount}/{props.partyLimit}</div>
                 </div>
             </div>
