@@ -1,4 +1,4 @@
-.my-party-container {
+.my-party-box {
     display: flex;
     align-items: center;
 
@@ -13,7 +13,13 @@
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
+.my-party-box:hover {
+    background-color: rgba(0, 0, 0, 0.02);
+}
+
 .party-content-container {
+    flex: 1;
+
     display: flex;
     flex-direction: column;
 
@@ -32,7 +38,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 3px;
+    gap: 7px;
 }
 
 .party-time {

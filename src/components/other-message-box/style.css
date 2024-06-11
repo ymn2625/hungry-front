@@ -1,0 +1,64 @@
+.others-message-box {
+    display: flex;
+    gap: 10px;
+
+    padding: 10px 20px;
+    box-sizing: border-box;
+}
+
+.others-message-sender-profile-img {
+    width: 40px;
+    height: 40px;
+
+    background-color: rgba(0, 0, 0, 0.5);
+    background-position: 50% 50%;
+    background-size: cover;
+
+    border-radius: 12px;
+
+    flex-shrink: 0;
+}
+
+.others-nickname-message-sendtime-box {
+    display: flex;
+    flex-direction: column;
+
+    gap: 5px;
+}
+
+.others-sender-nickname {
+    color: rgba(0, 0, 0, 0.8);
+
+    font-size: 14px;
+    font-weight: 400;
+}
+
+.others-message-content-sendtime {
+    display: flex;
+    gap: 5px;
+
+    align-items: flex-end;
+}
+
+.others-message-content {
+    padding: 10px;
+
+    border-radius: 0 15px 15px 15px;
+
+    background-color: rgba(0, 0, 0, 0.05);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 14px;
+    font-weight: 400;
+}
+
+.others-sendtime {
+    color: rgba(0, 0, 0, 0.8);
+    font-size: 12px;
+    font-weight: 400;
+
+    flex-shrink: 0;
+}

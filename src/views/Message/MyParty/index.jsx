@@ -1,25 +1,55 @@
 import MyPartyBox from "../../../components/myPartyBox";
+import './style.css';
+import Footer from "../../../components/footer";
+import {useEffect, useState} from "react";
+import {getPrivateApi} from "../../../apis/privateApi";
+import {GET_PARTIES_BY_USER_EMAIL} from "../../../apis/party/partyURL";
+import ResponseCode from "../../../enums/response-code";
+import {useNavigate} from "react-router-dom";
 
 function MyParty(props) {
-    const p1 = {
-        content: '내일 이 메뉴 어떠신쥐~',
-        partyId: 1,
-        partyCount: 3,
-        partyLimit: 5,
-        partyName: '떡볶이 푸파 모임이여너ㅗ러뉴먼ㄹㄷㅁ',
-        partyDescription: '떡볶이 열정적으로 드실 분 찾아요~^^',
-        partyImg: null,
-        partyTime: '점심',
-        partyStartTime: '2023-06-22 12:00:00',
-        partyEndTime: '2023-06-22 13:30:00',
-        storeId: 1
-    };
+    // value
+    const [myPartyList, setMyPartyList] = useState([]);
+
+    // navigate
+    const navigate = useNavigate();
+
+    // useEffect
+    useEffect(() => {
+        getPrivateApi(GET_PARTIES_BY_USER_EMAIL()).then(getPartyListByUserResponse);
+    }, []);
+
+    // response
+    const getPartyListByUserResponse = (responseBody) => {
+        if(!responseBody) return;
+        const { code, partyListItem } = responseBody;
+        setMyPartyList(partyListItem);
+
+        if(code === ResponseCode.DATABASE_ERROR) alert('데이터베이스 오류입니다.');
+        if(code === ResponseCode.NOT_EXIST_USER) alert('존재하지 않는 회원입니다');
+        if(code !== ResponseCode.SUCCESS) return;
+    }
 
     return (
-        <div>
-            <MyPartyBox {...p1}/>
+        <div className='my-party-container'>
+            <div className='my-party-title'>파티</div>
+            <div className='my-party-list-box'>
+                {myPartyList.length !== 0 ?
+                    (myPartyList.map((party) => (
+                        <MyPartyBox
+                            key={party.partyId}
+                            party={party}
+                            onClickHandler={() => navigate(`/parties/${party.partyId}`)}
+                        />
+                    ))) :
+                    (<div className='no-party-list'>
+                        파티가 존재하지 않습니다!
+                    </div>)
+                }
+            </div>
+            <Footer/>
         </div>
-    );
+    )
 }
 
 export default MyParty;

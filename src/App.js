@@ -17,6 +17,7 @@ import SearchResultWholePage from "./views/Search/SearchResultWholePage";
 import PartyDetail from "./views/Party/PartyDetail";
 import Message from "./views/Message/PartyRoom";
 import MyParty from "./views/Message/MyParty";
+import MessageRoom from "./views/Message/StoreParty";
 
 function RouteUrl () {
     const navigate = useNavigate();
@@ -75,8 +76,9 @@ function RouteUrl () {
                 <Route path='find-account' element={<LayoutWithPadding><FindAccount/></LayoutWithPadding>} />
             </Route>
             <Route path='/store/:storeId/room' element={<LayoutWithFooter><Rooms/></LayoutWithFooter>}></Route>
-            <Route path='/party/message' element={<Message/>}/>
-            <Route path='/my-party' element={<MyParty/>}/>
+            <Route path='/parties/:partyId' element={<Message/>}/>
+            <Route path='/parties' element={<MyParty/>}/>
+            <Route path='/message' element={<MessageRoom/>}/>
         </Routes>
     )
 }

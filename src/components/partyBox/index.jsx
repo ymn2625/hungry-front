@@ -4,13 +4,39 @@ import defaultProfileImg from "../../assets/images/default-profile-image.jpeg";
 const PartyRoomBox = (props) => {
     const formatDateTime = (dateTime) => {
         const dateObj = new Date(dateTime);
-        const month = dateObj.getMonth() + 1;
-        const day = dateObj.getDate();
-        const hours = dateObj.getHours();
-        const minutes = dateObj.getMinutes().toString().padStart(2, '0');
-        return `${month}/${day} ${hours}:${minutes}`;
-    };
+        const now = new Date();
 
+        // 오늘 날짜를 0시 0분 0초로 초기화
+        const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+        // 비교할 날짜를 0시 0분 0초로 초기화
+        const targetDate = new Date(dateObj.getFullYear(), dateObj.getMonth(), dateObj.getDate());
+
+        const diffInTime = targetDate.getTime() - today.getTime();
+        const diffInDays = diffInTime / (1000 * 60 * 60 * 24);
+
+        let finishParty;
+        if (diffInDays < 0) {
+            finishParty = '파티 종료';
+        }
+
+        let dayString;
+        if (diffInDays === 0) {
+            dayString = '오늘';
+        } else if (diffInDays === 1) {
+            dayString = '내일';
+        } else if (diffInDays === 2) {
+            dayString = '모레';
+        } else {
+            const month = (dateObj.getMonth() + 1).toString().padStart(2, '0');
+            const day = dateObj.getDate().toString().padStart(2, '0');
+            dayString = `${month}/${day}`;
+        }
+
+        const hours = dateObj.getHours().toString().padStart(2, '0');
+        const minutes = dateObj.getMinutes().toString().padStart(2, '0');
+
+        return finishParty ? finishParty : `${dayString} ${hours}:${minutes}`;
+    };
 
     const substringTime = (partyTime) => {
         const substringT = partyTime.charAt(0);
