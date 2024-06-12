@@ -1,7 +1,7 @@
 import defaultProfileImg from "../../assets/images/default-profile-image.jpeg";
 import './style.css';
 
-const OtherMessageBox = ({key, message}) => {
+const OtherMessageBox = ({message}) => {
     const formatSendTime = (sendTime) => {
         const date = new Date(sendTime);
         let hours = date.getHours();
@@ -14,7 +14,7 @@ const OtherMessageBox = ({key, message}) => {
     };
 
     return (
-        <div className='others-message-box' key={key}>
+        <div className='others-message-box'>
             <div className='others-message-sender-profile-img'
                  style={{backgroundImage: `url(${message.userProfileImg ? message.userProfileImg : defaultProfileImg})`}}>
             </div>

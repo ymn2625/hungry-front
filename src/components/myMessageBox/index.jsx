@@ -1,6 +1,6 @@
 import './style.css'
-import defaultProfileImg from "../../assets/images/default-profile-image.jpeg";
-const MyMessageBox = ({key, message}) => {
+
+const MyMessageBox = ({message}) => {
     const formatSendTime = (sendTime) => {
         const date = new Date(sendTime);
         let hours = date.getHours();

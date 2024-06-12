@@ -75,10 +75,9 @@ function RouteUrl () {
                 <Route path='oauth-response/:token/:expirationTime' element={<LayoutWithPadding><OAuth/></LayoutWithPadding>} />
                 <Route path='find-account' element={<LayoutWithPadding><FindAccount/></LayoutWithPadding>} />
             </Route>
-            <Route path='/store/:storeId/room' element={<LayoutWithFooter><Rooms/></LayoutWithFooter>}></Route>
+            <Route path='/store/:storeId/room' element={<LayoutWithFooter><Rooms/></LayoutWithFooter>}/>
             <Route path='/parties/:partyId' element={<Message/>}/>
             <Route path='/parties' element={<MyParty/>}/>
-            <Route path='/message' element={<MessageRoom/>}/>
         </Routes>
     )
 }

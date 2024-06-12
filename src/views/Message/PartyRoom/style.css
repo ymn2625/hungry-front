@@ -1,0 +1,174 @@
+.message-container {
+    position: relative;
+
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    gap: 10px;
+
+    background: rgb(185,206,224);
+
+    overflow: hidden;
+}
+.message-list-box {
+    flex: 1;
+    display: flex;
+    flex-direction: column-reverse;
+    overflow: scroll;
+
+    padding: 20px;
+}
+
+.message-textarea-box {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+
+    gap: 5px;
+
+    padding: 0 20px 20px;
+    background-color: rgb(255,255,255);
+}
+
+.message-textarea-div {
+    width: 100%;
+}
+
+.message-textarea {
+    width: 100%;
+    box-sizing: border-box;
+
+    border: none;
+
+    padding: 10px;
+    margin: 0;
+
+    height: 65px;
+
+    font-weight: 400;
+    font-size: 14px;
+}
+
+.message-textarea:focus {
+    outline: none;
+}
+
+.message-button-on {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background-color: rgb(253,234,49);
+    border-radius: 7px;
+    height: 32px;
+
+    width: 65px;
+
+    font-weight: 400;
+    font-size: 14px;
+}
+
+.message-button-on:hover {
+    background-color: rgb(246, 224, 46);
+}
+
+.message-button-off {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background-color: rgb(242,242,242);
+    border-radius: 7px;
+    height: 32px;
+
+    width: 65px;
+
+    font-weight: 400;
+    font-size: 14px;
+}
+
+/* 친구 목록 */
+@keyframes slideIn {
+    from {
+        right: -100%;
+    }
+    to {
+        right: 0;
+    }
+}
+
+@keyframes slideOut {
+    from {
+        right: 0;
+    }
+    to {
+        right: -100%;
+    }
+}
+
+.party-member-list-box {
+    position: absolute;
+    top: 0;
+    right: -100%;
+
+    width: 80%;
+    height: 100%;
+
+    background-color: rgba(255, 255, 255);
+
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    transition: right 0.5s ease-in-out;
+}
+
+.party-member-list-box.show {
+    animation: slideIn 0.5s forwards;
+}
+
+.party-member-list-box.hide {
+    animation: slideOut 0.5s forwards;
+}
+
+.party-member-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.party-member-list-title {
+    padding: 0 0 10px;
+    margin: 0 20px;
+
+    font-size: 15px;
+    font-weight: 400;
+
+    border-bottom: 1px solid rgb(239, 239, 239);
+}
+
+.party-member-out {
+    padding: 20px;
+    height: 86px;
+
+    background-color: rgb(248, 248, 248);
+    border-top: 1px solid rgb(239, 239, 239);
+}
+
+.party-member-out-icon {
+
+}
+
+.go-back-arrow-icon {
+    padding: 20px 20px 0;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 18px;
+    height: 50px;
+
+    flex-shrink: 0;;
+}

@@ -5,10 +5,13 @@ import {useNavigate, useParams} from "react-router-dom";
 import {GET_MESSAGES} from "../../../apis/message/messageURL";
 import ResponseCode from "../../../enums/response-code";
 import './style.css';
-import {GET_PARTY_MEMBERS} from "../../../apis/party/partyURL";
-import defaultProfileImg from '../../../assets/images/default-profile-image.jpeg'
-import OtherMessageBox from "../../../components/other-message-box";
-import MyMessageBox from "../../../components/my-message-box";
+import {GET_PARTY_INFO, GET_PARTY_MEMBERS} from "../../../apis/party/partyURL";
+import OtherMessageBox from "../../../components/otherMessageBox";
+import MyMessageBox from "../../../components/myMessageBox";
+import MessageHeaderBox from "../../../components/messageHeaderBox";
+import BoxArrow from "../../../components/bootstrapIcon/BoxArrow";
+import PartyMemberBox from "../../../components/partyMemberBox";
+import Arrow from "../../../components/bootstrapIcon/Arrow";
 
 function Message() {
     // navigate
@@ -19,20 +22,23 @@ function Message() {
 
     // ref
     const stompClient = useRef(null);
+    const textareaRef = useRef(null);
 
     // value
     const partyId = params.partyId;
     const [userEmail, setUserEmail] = useState('');
     const [messages, setMessages] = useState([]);
-    const [tempMessage, setTempMessage] = useState([]);
     const [partyMembers, setPartyMembers] = useState([]);
+    const [partyInfo, setPartyInfo] = useState([]);
     const [inputValue, setInputValue] = useState('');
+    const [isMenu, setIsMenu] = useState(false);
 
     // onChange
     const handleInputChange = (e) => {
         setInputValue(e.target.value);
     }
 
+    // stomp
     const headers = {
         'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
         'PartyId': partyId
@@ -44,7 +50,6 @@ function Message() {
         stompClient.current.connect(headers, () => {
             stompClient.current.subscribe(`/sub/parties/${partyId}`, (message) => {
                 const newMessage = JSON.parse(message.body);
-                console.log(newMessage);
                 findSender(newMessage);
             });
         }, (error) => {
@@ -58,12 +63,13 @@ function Message() {
         }
     }
 
+    // message format
     const findSender = (newMessage) => {
         let senderProfile = '';
         let senderNickname = '';
 
         partyMembers.forEach((item) => {
-            if(tempMessage.userEmail === item.userEmail) {
+            if(newMessage.userEmail === item.userEmail) {
                 senderProfile = item.userProfileImg;
                 senderNickname = item.userNickname;
             }
@@ -76,7 +82,7 @@ function Message() {
             content: newMessage.content,
             sendTime: newMessage.sendTime
         }
-        setMessages((prevMessage) => [...prevMessage, messageInfo]);
+        setMessages((prevMessage) => [messageInfo, ...prevMessage]);
     }
 
     // api
@@ -88,9 +94,14 @@ function Message() {
         getPrivateApi(GET_PARTY_MEMBERS(partyId)).then(getPartyMembersResponse);
     }
 
+    const getPartyInfo = () => {
+        getPrivateApi(GET_PARTY_INFO(partyId)).then(getPartyInfoResponse);
+    }
+
     // useEffect
     useEffect(() => {
         connect();
+        getPartyInfo();
         getPartyMembers();
         getMessages();
         return () => disconnect();
@@ -120,8 +131,19 @@ function Message() {
         if(code !== ResponseCode.SUCCESS) return;
     }
 
+    const getPartyInfoResponse = (responseBody) => {
+        if(!responseBody) return;
+        const { code, ...data } = responseBody;
+        setPartyInfo(data);
+
+        if(code === ResponseCode.DATABASE_ERROR) alert('데이터베이스 오류입니다.');
+        if(code === ResponseCode.NOT_EXIST_PARTY) alert('존재하지 않는 파티입니다.');
+        if(code === ResponseCode.NO_PERMISSION) alert('접근 권한이 없습니다.');
+        if(code !== ResponseCode.SUCCESS) return;
+    }
+
     // onClick
-    const sendMessageClickHandler = () => {
+    const onClickSendMessageHandler = () => {
         if(stompClient.current && inputValue) {
             const body = {
                 partyId: partyId,
@@ -134,6 +156,19 @@ function Message() {
         }
     }
 
+    // onKeyDown
+    const onTextareaKeyDownHandler = (event: KeyboardEvent<HTMLInputElement>) => {
+        if(event.key !== 'Enter') return;
+        if(!textareaRef.current) return;
+        onClickSendMessageHandler();
+    }
+
+
+    const onClickMenuHandler = () => {
+        setIsMenu(prevIsMenu => !prevIsMenu);
+    }
+
+    // function
     const getSendTime = (currentDate) => {
         // 각 구성 요소를 가져오기
         const year = currentDate.getFullYear();
@@ -148,18 +183,42 @@ function Message() {
         return formattedDate;
     }
 
+    // class
+    const buttonClass = inputValue ? 'message-button-on' : 'message-button-off';
+
     return (
-        <div>
-            <input type='text' value={inputValue} onChange={handleInputChange}/>
-            <button onClick={sendMessageClickHandler}>전송</button>
-            <div>
+        <div className='message-container'>
+            <MessageHeaderBox onClick={onClickMenuHandler} partyInfo={partyInfo}/>
+            <div className='message-list-box'>
                 {messages.map((item, index) => (
                     userEmail === item.userEmail ? (
-                        <MyMessageBox key={index} message={item} />
+                        <MyMessageBox key={index} message={item}/>
                     ) : (
-                        <OtherMessageBox key={index} message={item} />
+                        <OtherMessageBox key={index} message={item}/>
                     )
                 ))}
+            </div>
+            <div className='message-textarea-box'>
+                <div className='message-textarea-div'>
+                    <textarea className='message-textarea' value={inputValue} onChange={handleInputChange} ref={textareaRef} onKeyDown={onTextareaKeyDownHandler}/>
+                </div>
+                <div className={buttonClass} onClick={onClickSendMessageHandler}>전송</div>
+            </div>
+            <div className={`party-member-list-box ${isMenu ? 'show' : 'hide'}`}>
+                <div className='go-back-arrow-icon' onClick={onClickMenuHandler}>
+                    <Arrow width={18} height={18} color={'rgba(0, 0, 0, 0.5)'}/>
+                </div>
+                <div className='party-member-list-title'>파티 멤버</div>
+                <div className='party-member-content'>
+                    {partyMembers.map((item, index) => (
+                        <PartyMemberBox key={index} partyMember={item}/>
+                    ))}
+                </div>
+                <div className='party-member-out'>
+                    <div className='party-member-out-icon'>
+                        <BoxArrow width={20} height={20} color={'rgba(0, 0, 0, 0.5)'}/>
+                    </div>
+                </div>
             </div>
         </div>
 
