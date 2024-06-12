@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import {PARTY_INFO, PARTY_LIST, PARTY_MEMBERS_LIST} from "../apis/party/partyURL";
+import {PARTY_INFO, PARTY_LIST, PARTY_MEMBER_LIST} from "../apis/party/partyURL";
 import {getPrivateApi, postPrivateApi} from "../apis/privateApi";
 
 const party_store = create((set, get) => ({
@@ -21,9 +21,14 @@ const party_store = create((set, get) => ({
     customPartyList: [],
     customPartyDetail: '',
 
-    partyMembersList: [],
+    partyMemberList: [],
 
-
+    userPartyId: null,
+    userEmail: '',
+    userName:'',
+    userNickname:'',
+    userPartyMemberRole: null,
+    userAttractive:0,
 
     setCustomPartyDetail: (customPartyDetail) => {
         console.log("디테일 안들어왔어?" + customPartyDetail);
@@ -122,68 +127,58 @@ const party_store = create((set, get) => ({
     setPartyStoreId: (storeId) => set({ storeId }), // storeId 설정 함수
     setPartyListRemove: () => set({ partyList: [] }), // 파티 리스트 초기화 함수
 
-    setPartyMembersList: async (partyId) => {
-        set({ partyMembersList: [] });
+    setPartyMemberList: async (partyId) => {
+        set({ partyMemberList: [] });
         if(partyId){
             try {
-                const partyMembersListUrl = PARTY_LIST().replace('{partyId}', partyId);
+                const partyMemberListUrl = PARTY_MEMBER_LIST().replace('{partyId}', partyId);
 
                 // 서버에 검색 요청
 
-                const response = await getPrivateApi(partyMembersListUrl)
+                const response = await getPrivateApi(partyMemberListUrl)
                 // 서버로부터 받은 응답 데이터를 JSON 형식으로 파싱
-                console.log(response.partyListFromServer[0].partyName + "response는 json 속에있는 배열을 넣어야함");
+                console.log(response.partyMemberListFromServer.length + "이거 몇이니");
 
-                const updateResponse = response.partyListFromServer;
+                const updateResponse = response.partyMemberListFromServer;
 
                 // 응답 데이터 유효성 검사
                 if (updateResponse && Array.isArray(updateResponse) && updateResponse.length > 0) {
                     // 응답 데이터가 유효하면 searchResults에 저장
 
 
-                    const updatedPartyList = updateResponse.map(party => ({
-                        /*    partyStoreId: party.partyStoreId,
-                            partyId: party.partyId,
-                            partyName: party.partyName,
-                            partyHost: party.partyHost,
-                            partyLimitNum: party.partyLimitNum,
-                            partyDescription: party.partyDescription  */
+                    const updatedPartyMemberList = updateResponse.map(partyMember => ({
 
-                        partyStoreId: party.storeId,
-
-                        partyId: party.partyId,
-                        partyCount: party.partyCount,
-                        partyLimit: party.partyLimit,
-                        partyName: party.partyName,
-                        partyDescription: party.partyDescription,
-                        partyTime:party.partyTime,
-                        partyStartTime:party.partyStartTime,
-                        partyEndTime:party.partyEndTime,
+                        userPartyId: partyMember.partyId,
+                        userEmail: partyMember.userEmail,
+                        userName: partyMember.userName,
+                        userNickname: partyMember.userNickname,
+                        userAttractive: partyMember.userAttractive,
+                        userPartyMemberRole: partyMember.memberRole,
                     }));
 
-
+                    console.log(updatedPartyMemberList[0].userEmail + "이건뭐지");
                     // 기존 partyList 가져오기
-                    const existingPartyList = get().partyList;
+                    const existingPartyMemberList = get().partyMemberList;
 
                     // 중복된 항목 필터링
-                    const filteredPartyList = updatedPartyList.filter(
-                        newParty => !existingPartyList.some(
-                            existingParty => existingParty.partyId === newParty.partyId
+                    const filteredPartyMemberList = updatedPartyMemberList.filter(
+                        newPartyMember => !existingPartyMemberList.some(
+                            existingPartyMember => existingPartyMember.userEmail === newPartyMember.userEmail
                         )
                     );
 
                     set((state) => ({
-                        partyList: [...state.partyList, ...filteredPartyList]
+                        partyMemberList: [...state.partyMemberList, ...filteredPartyMemberList]
                     }));
                 } else {
                     console.log('No data received or data is not an array');
                     // 응답 데이터가 유효하지 않으면 빈 배열 설정
-                    set({ partyList: [] });
+                    set({ partyMemberList: [] });
                 }
             } catch (error) {
                 console.error('Error:', error);
-                // 에러가 발생하면 searchResults를 빈 배열로 설정
-                set({ partyList: [] });
+
+                set({ partyMemberList: [] });
             }
         }
     },

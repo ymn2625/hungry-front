@@ -2,6 +2,7 @@ import './style.css'
 import defaultProfileImg from "../../assets/images/default-profile-image.jpeg";
 
 const PartyRoomBox = (props) => {
+
     const formatDateTime = (dateTime) => {
         const dateObj = new Date(dateTime);
         return `${dateObj.getMonth() + 1}/${dateObj.getDate()} ${dateObj.getHours()}:${dateObj.getMinutes()}`;
@@ -32,7 +33,7 @@ const PartyRoomBox = (props) => {
                     <div className='count'>{props.partyCount}/{props.partyLimit}</div>
                 </div>
             </div>
-            <div className='party-in-button' onClick={props.onClickHandler}>참여</div>
+            <div className='party-in-button' onClick={(event)=>{ event.stopPropagation(); props.onClickHandler() }}>참여</div>
         </div>
     )
 }
