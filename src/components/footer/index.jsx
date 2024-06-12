@@ -22,6 +22,12 @@ const Footer = () => {
         //setStoreId(null);
         navigate('/');
     }
+    const moveToMyParty = () => {
+        navigate('/parties');
+    }
+    const moveToMyPage = () => {
+        navigate('/account/user');
+    }
 
     return (
         <footer className="footer">
@@ -29,7 +35,7 @@ const Footer = () => {
                 <div className="logo-box" onClick={moveToMap}><Map w={'32px'} h={'32px'}/></div>
                 <div className="title">지도</div>
             </div>
-            <div className="footer-section">
+            <div className="footer-section" onClick={moveToMyParty}>
                 <div className="logo-box"><BpLogo w={'44px'} h={'32px'}/></div>
                 <div className="title">배고팟</div>
             </div>
@@ -37,7 +43,7 @@ const Footer = () => {
                 <div className="logo-box"><People w={'32px'} h={'32px'}/></div>
                 <div className="title">친구</div>
             </div>
-            <div className="footer-section">
+            <div className="footer-section" onClick={moveToMyPage}>
                 <div className="logo-box"><My w={'32px'} h={'32px'}/></div>
                 <div className="title">마이페이지</div>
             </div>
