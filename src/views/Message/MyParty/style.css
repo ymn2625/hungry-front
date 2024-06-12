@@ -1,0 +1,20 @@
+.my-party-container {
+    height: 100%;
+}
+
+.my-party-list-box {
+    height: 683px; /* 전체 - 푸터 - 제목 */
+    overflow-y: auto;
+}
+
+.my-party-title {
+    height: 25px;
+    padding: 20px 20px 10px 20px;
+
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.no-party-list {
+
+}

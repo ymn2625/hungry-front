@@ -11,8 +11,6 @@ import PlusCircle from "../../../components/bootstrapIcon/PlusCircle";
 import party_store from "../../../stores/party_store";
 import storeStore from "../../../stores/store_store";
 import PartyRoomBox from "../../../components/partyRoomBox";
-import partyStore from "../../../stores/party_store";
-import People from "../../../components/bootstrapIcon/People";
 
 
 function SearchResultWholePage() {
@@ -39,9 +37,11 @@ function SearchResultWholePage() {
 
     const partyDetailMove = (clickedPartyId) => {
         // 검색 버튼을 클릭하면 검색 결과 페이지로 이동
+        console.log(clickedPartyId + "몇?");
 
         const ClickedPartyDetail = customPartyList.filter(party => party.partyId === clickedPartyId)
-
+        console.log(customPartyList[0].partyName + "어떻게들어갔니");
+        console.log(ClickedPartyDetail[0].partyName+"시팔저팔");
         if(customPartyDetail ===''){
             setCustomPartyDetail(ClickedPartyDetail);
         }else{

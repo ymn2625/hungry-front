@@ -1,0 +1,29 @@
+.my-message-box {
+    padding: 10px 0;
+    box-sizing: border-box;
+
+    display: flex;
+    gap: 5px;
+
+    justify-content: flex-end;
+    align-items: flex-end;
+}
+
+.my-sendtime {
+    color: rgba(0, 0, 0, 0.8);
+    font-size: 12px;
+    font-weight: 400;
+
+    flex-shrink: 0;
+}
+
+.my-message-content {
+    padding: 10px;
+
+    border-radius: 15px 0 15px 15px;
+
+    background-color: rgb(253,234,49);
+
+    font-size: 14px;
+    font-weight: 400;
+}
