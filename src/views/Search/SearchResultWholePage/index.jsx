@@ -9,8 +9,7 @@ import Clock from "../../../components/bootstrapIcon/Clock";
 import './style.css'
 import PlusCircle from "../../../components/bootstrapIcon/PlusCircle";
 import party_store from "../../../stores/party_store";
-import storeStore from "../../../stores/store_store";
-import PartyRoomBox from "../../../components/partyRoomBox";
+import PartyBox from "../../../components/partyBox";
 
 
 function SearchResultWholePage() {
@@ -105,7 +104,7 @@ function SearchResultWholePage() {
                                             partyLimit: party.partyLimit,
                                             onClickHandler: null
                                         };
-                                            return <div key={party.partyId} onClick={()=>partyDetailMove(party.partyId)}><PartyRoomBox {...p1}/>
+                                            return <div key={party.partyId} onClick={()=>partyDetailMove(party.partyId)}><PartyBox {...p1}/>
                                             {customPartyDetail !== '' && customPartyDetail[0].partyId === party.partyId && (
                                                 <div style={{ width: '393px', padding: '20px 0px', background: "skyblue" }}>
                                                     소개: {customPartyDetail[0].partyDescription}<br/>

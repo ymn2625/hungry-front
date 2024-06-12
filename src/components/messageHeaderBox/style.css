@@ -1,0 +1,54 @@
+.message-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    gap: 10px;
+
+    padding: 20px 20px 0;
+}
+
+.message-party-info-box {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+}
+
+.message-party-name {
+    font-size: 15px;
+    font-weight: 400;
+
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+}
+
+.message-party-count {
+    color: rgba(0, 0, 0, 0.5);
+
+    font-size: 14px;
+    font-weight: 400;
+}
+
+.arrow-icon {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 20px;
+    height: 22px;
+
+    flex-shrink: 0;
+}
+
+.menu-icon {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    width: 23px;
+    height: 23px;
+
+    flex-shrink: 0;
+}
+

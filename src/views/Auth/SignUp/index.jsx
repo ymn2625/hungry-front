@@ -85,7 +85,7 @@ function SignUp(props) {
         if(location.state?.email != null || location.state?.type != null) {
             setUserEmail(location.state?.email);
             setUserType(location.state?.type);
-            setUserPassword('socia@' + Math.random().toString().substring(2,6));
+            setUserPassword('social@' + Math.random().toString().substring(2,6));
             setStep(2);
         }
     }, [location.state?.email, location.state?.type]);
