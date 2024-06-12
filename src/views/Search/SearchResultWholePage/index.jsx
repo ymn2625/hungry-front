@@ -10,7 +10,8 @@ import './style.css'
 import PlusCircle from "../../../components/bootstrapIcon/PlusCircle";
 import party_store from "../../../stores/party_store";
 import storeStore from "../../../stores/store_store";
-import PartyRoomBox from "../../../components/partyRoomBox";
+import People from "../../../components/bootstrapIcon/People";
+import PartyBox from "../../../components/partyBox";
 
 
 function SearchResultWholePage() {
@@ -128,7 +129,7 @@ function SearchResultWholePage() {
                                             partyLimit: party.partyLimit,
                                             onClickHandler: null
                                         };
-                                            return <div key={party.partyId} onClick={()=>partyDetailMove(party.partyId)}><PartyRoomBox {...p1} onClickHandler={onClickHandler}/>
+                                            return <div key={party.partyId} onClick={()=>partyDetailMove(party.partyId)}><PartyBox {...p1} onClickHandler={onClickHandler}/>
                                             {customPartyDetail !== '' && customPartyDetail[0].partyId === party.partyId && (
                                                 <div style={{ width: '' +
                                                         '369px', padding: '20px 12px' }}>
