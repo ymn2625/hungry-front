@@ -12,12 +12,10 @@ import Tel from "./views/Account/Tel";
 import Password from "./views/Account/Password";
 import FindAccount from "./views/Auth/FindAccount";
 import {useEffect} from "react";
-import Rooms from "./views/Message/StoreParty";
 import SearchResultWholePage from "./views/Search/SearchResultWholePage";
 import PartyDetail from "./views/Party/PartyDetail";
 import Message from "./views/Message/PartyRoom";
 import MyParty from "./views/Message/MyParty";
-import MessageRoom from "./views/Message/StoreParty";
 
 function RouteUrl () {
     const navigate = useNavigate();
@@ -75,7 +73,7 @@ function RouteUrl () {
                 <Route path='oauth-response/:token/:expirationTime' element={<LayoutWithPadding><OAuth/></LayoutWithPadding>} />
                 <Route path='find-account' element={<LayoutWithPadding><FindAccount/></LayoutWithPadding>} />
             </Route>
-            <Route path='/store/:storeId/room' element={<LayoutWithFooter><Rooms/></LayoutWithFooter>}/>
+
             <Route path='/parties/:partyId' element={<Message/>}/>
             <Route path='/parties' element={<MyParty/>}/>
         </Routes>

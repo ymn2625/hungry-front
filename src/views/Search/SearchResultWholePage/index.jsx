@@ -9,6 +9,8 @@ import Clock from "../../../components/bootstrapIcon/Clock";
 import './style.css'
 import PlusCircle from "../../../components/bootstrapIcon/PlusCircle";
 import party_store from "../../../stores/party_store";
+import storeStore from "../../../stores/store_store";
+import People from "../../../components/bootstrapIcon/People";
 import PartyBox from "../../../components/partyBox";
 
 
@@ -20,6 +22,10 @@ function SearchResultWholePage() {
     const { customPartyList } = party_store();
     const setCustomPartyDetail = party_store((state) => state.setCustomPartyDetail);
     const { customPartyDetail} = party_store();
+    const setPartyMemberList = party_store((state) => state.setPartyMemberList);
+    const { partyMemberList } = party_store();
+
+
 
     const handleTurnBack = () =>{
         navigate(-1); // -1은 이전 페이지로 이동하는 명령입니다.
@@ -43,12 +49,31 @@ function SearchResultWholePage() {
             setCustomPartyDetail('');
         }
 
+        setPartyMemberList(clickedPartyId);
+
         //navigate(`/party/party-detail`); // useNavigate로 변경
     };
+
+    const onClickHandler = ()=>{
+        console.log("야옹");
+
+    }
 
     useEffect(()=>{
         setCustomPartyDetail('');
     },[]);
+
+// partyMemberList를 방장과 일반 멤버로 분류
+    const sortedMembers = partyMemberList.sort((a, b) => {
+        // 방장의 우선순위를 설정합니다. 여기서는 userPartyMemberRole이 0인 것이 방장입니다.
+        if (a.userPartyMemberRole === 0 && b.userPartyMemberRole !== 0) {
+            return -1; // a가 방장이므로 a가 먼저 나와야 합니다.
+        } else if (a.userPartyMemberRole !== 0 && b.userPartyMemberRole === 0) {
+            return 1; // b가 방장이므로 b가 먼저 나와야 합니다.
+        } else {
+            return 0; // 그 외의 경우 순서를 변경하지 않습니다.
+        }
+    });
 
     return(
         <div style={{width:'393px', height:'852px', overflow:'auto'}}>
@@ -104,27 +129,32 @@ function SearchResultWholePage() {
                                             partyLimit: party.partyLimit,
                                             onClickHandler: null
                                         };
-                                            return <div key={party.partyId} onClick={()=>partyDetailMove(party.partyId)}><PartyBox {...p1}/>
+                                            return <div key={party.partyId} onClick={()=>partyDetailMove(party.partyId)}><PartyBox {...p1} onClickHandler={onClickHandler}/>
                                             {customPartyDetail !== '' && customPartyDetail[0].partyId === party.partyId && (
-                                                <div style={{ width: '393px', padding: '20px 0px', background: "skyblue" }}>
-                                                    소개: {customPartyDetail[0].partyDescription}<br/>
+                                                <div style={{ width: '' +
+                                                        '369px', padding: '20px 12px' }}>
+                                                    <div style={{color:'#999'}}>소개: {customPartyDetail[0].partyDescription}</div><br/>
+                                                    <People w={'24px'} h={'24px'} c={'#0098ff'}/> <div style={{fontSize:'20px' ,display:'inline-block', color:'#0098ff'}}>멤버 {sortedMembers.length}/{party.partyLimit}</div>
+                                                    {sortedMembers.map(member=>(
+
+                                                        <div key={member.userEmail}>
+                                                            {member.userPartyMemberRole === 0 ? <div style={{background:'#29adff', width:'359px',border:'1px solid #0098ff', borderRadius:'8px', padding:'4px 4px', position:'relative'}}> {member.userNickname}  {member.userAttractive}  <span style={{color:'white', position:'absolute', right:'12px'}}>(방장)</span></div>
+                                                                                                : <div style={{background:'#80ccff', marginTop:'4px',width:'359px',border:'1px solid #0098ff', borderRadius:'8px', padding:'4px 4px'}}>{member.userNickname}  {member.userAttractive}</div> }
+                                                        </div>
+                                                    ))}
+                                                    {sortedMembers.length - party.partyLimit !== 0 ? (
+                                                        <>
+                                                            {Array(party.partyLimit - sortedMembers.length).fill().map((_, index) => (
+                                                                <div key={index} style={{ marginTop:'4px',width:'359px',border:'1px solid #0098ff', borderRadius:'8px', padding:'4px 4px', textAlign:'center', color:'#ccc'}}>비어있음</div>
+                                                            ))}
+                                                        </>
+                                                    ) : ''}
                                                     <br/>
-                                                    방장:  <br/>/파티원 List<br/>/소개글
                                                 </div>
                                             )}
                                             </div>
                                         })}
                                     </div>
-
-                        {/*파티정보 상태창*/}
-
-                 {/*       {customPartyDetail !== '' ?
-                            <div style={{width: '393px',padding:'20px 0px', background: "skyblue"}}>
-                                소개: {customPartyDetail[0].partyDescription}<br/>
-                                <br/>
-                                방장:  <br/>/파티원 List<br/>/소개글
-
-                            </div> : ''}*/}
 
                         <div style={{marginTop:'18px', display:'flex',justifyContent:'center',alignItems:'center'}}>
                                         <div style={{background:'#3af', width:'200px', height:'40px', borderRadius:'20px', display:'flex',justifyContent:'center',alignItems:'center', fontSize:'18px', color:'white' }}>
