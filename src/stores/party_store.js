@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import {PARTY_INFO, PARTY_LIST, PARTY_MEMBER_LIST} from "../apis/party/partyURL";
+import {PARTY_INFO, PARTY_LIST, PARTY_MEMBER_LIST_JIN} from "../apis/party/partyURL";
 import {getPrivateApi, postPrivateApi} from "../apis/privateApi";
 
 const party_store = create((set, get) => ({
@@ -21,7 +21,7 @@ const party_store = create((set, get) => ({
     customPartyList: [],
     customPartyDetail: '',
 
-    partyMemberList: [],
+    partyMemberListJin: [],
 
     userPartyId: null,
     userEmail: '',
@@ -127,11 +127,11 @@ const party_store = create((set, get) => ({
     setPartyStoreId: (storeId) => set({ storeId }), // storeId 설정 함수
     setPartyListRemove: () => set({ partyList: [] }), // 파티 리스트 초기화 함수
 
-    setPartyMemberList: async (partyId) => {
-        set({ partyMemberList: [] });
+    setPartyMemberListJin: async (partyId) => {
+        set({ partyMemberListJin: [] });
         if(partyId){
             try {
-                const partyMemberListUrl = PARTY_MEMBER_LIST().replace('{partyId}', partyId);
+                const partyMemberListUrl = PARTY_MEMBER_LIST_JIN().replace('{partyId}', partyId);
 
                 // 서버에 검색 요청
 
@@ -158,7 +158,7 @@ const party_store = create((set, get) => ({
 
                     console.log(updatedPartyMemberList[0].userEmail + "이건뭐지");
                     // 기존 partyList 가져오기
-                    const existingPartyMemberList = get().partyMemberList;
+                    const existingPartyMemberList = get().partyMemberListJin;
 
                     // 중복된 항목 필터링
                     const filteredPartyMemberList = updatedPartyMemberList.filter(
@@ -168,17 +168,17 @@ const party_store = create((set, get) => ({
                     );
 
                     set((state) => ({
-                        partyMemberList: [...state.partyMemberList, ...filteredPartyMemberList]
+                        partyMemberListJin: [...state.partyMemberListJin, ...filteredPartyMemberList]
                     }));
                 } else {
                     console.log('No data received or data is not an array');
                     // 응답 데이터가 유효하지 않으면 빈 배열 설정
-                    set({ partyMemberList: [] });
+                    set({ partyMemberListJin: [] });
                 }
             } catch (error) {
                 console.error('Error:', error);
 
-                set({ partyMemberList: [] });
+                set({ partyMemberListJin: [] });
             }
         }
     },

@@ -24,6 +24,7 @@ function MyParty(props) {
         if(!responseBody) return;
         const { code, partyListItem } = responseBody;
         setMyPartyList(partyListItem);
+        console.log(partyListItem[0]+"뭐가좀 들어왔어?");
 
         if(code === ResponseCode.DATABASE_ERROR) alert('데이터베이스 오류입니다.');
         if(code === ResponseCode.NOT_EXIST_USER) alert('존재하지 않는 회원입니다');

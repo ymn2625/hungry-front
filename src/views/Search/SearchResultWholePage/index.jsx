@@ -22,8 +22,8 @@ function SearchResultWholePage() {
     const { customPartyList } = party_store();
     const setCustomPartyDetail = party_store((state) => state.setCustomPartyDetail);
     const { customPartyDetail} = party_store();
-    const setPartyMemberList = party_store((state) => state.setPartyMemberList);
-    const { partyMemberList } = party_store();
+    const setPartyMemberListJin = party_store((state) => state.setPartyMemberListJin);
+    const { partyMemberListJin } = party_store();
 
 
 
@@ -38,18 +38,15 @@ function SearchResultWholePage() {
 
     const partyDetailMove = (clickedPartyId) => {
         // 검색 버튼을 클릭하면 검색 결과 페이지로 이동
-        console.log(clickedPartyId + "몇?");
-
         const ClickedPartyDetail = customPartyList.filter(party => party.partyId === clickedPartyId)
-        console.log(customPartyList[0].partyName + "어떻게들어갔니");
-        console.log(ClickedPartyDetail[0].partyName+"시팔저팔");
+
         if(customPartyDetail ===''){
             setCustomPartyDetail(ClickedPartyDetail);
         }else{
             setCustomPartyDetail('');
         }
 
-        setPartyMemberList(clickedPartyId);
+        setPartyMemberListJin(clickedPartyId);
 
         //navigate(`/party/party-detail`); // useNavigate로 변경
     };
@@ -64,7 +61,7 @@ function SearchResultWholePage() {
     },[]);
 
 // partyMemberList를 방장과 일반 멤버로 분류
-    const sortedMembers = partyMemberList.sort((a, b) => {
+    const sortedMembers = partyMemberListJin.sort((a, b) => {
         // 방장의 우선순위를 설정합니다. 여기서는 userPartyMemberRole이 0인 것이 방장입니다.
         if (a.userPartyMemberRole === 0 && b.userPartyMemberRole !== 0) {
             return -1; // a가 방장이므로 a가 먼저 나와야 합니다.
